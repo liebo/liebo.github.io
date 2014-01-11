@@ -8,14 +8,14 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <title>About Disruptor by liebo</title>
+    <title>Disruptor Illustrated by liebo</title>
   </head>
 
   <body>
 
     <header>
       <div class="container">
-        <h1>About Disruptor</h1>
+        <h1>Disruptor Illustrated</h1>
         <h2></h2>
 
         <section id="downloads">
@@ -26,26 +26,33 @@
 
     <div class="container">
       <section id="main_content">
-        <ol>
-<li>技术都是相通的，关键是理念
-1.1 排队问题：两个性能指标：吞吐量、延时
+        <h1>
+<a name="technology-is-similar-thought-behind-is-the-key" class="anchor" href="#technology-is-similar-thought-behind-is-the-key"><span class="octicon octicon-link"></span></a>technology is similar, thought behind is the key</h1>
+
+<p>so we start from the real world examples, we will find the idea behind technology is counterpart of real world cases.</p>
+
+<h1>
+<a name="queue-problem" class="anchor" href="#queue-problem"><span class="octicon octicon-link"></span></a>queue problem</h1>
+
+<p>consider the basic queue processing, a lot of people need to buy their meals. as the boss of fast food, what are you going to do to serve more customers? imagine you employ </p>
+
+<p>1.1 排队问题：两个性能指标：吞吐量、延时
 1.2 串行：麦当劳收银员，换一个动作快的，吞吐量/延时线性提高。Scale up 
 1.3 摩尔定律适用
 1.4 并行：增加一个收银员，吞吐量线性提高/延时不变 Scale out
 1.5 Admal定律适用
-1.6 分层体系结构，总店、分店、并行运作，职责划分不同</li>
-<li>Disruptor：CPU level 并行计算，进程内通信
+1.6 分层体系结构，总店、分店、并行运作，职责划分不同
+2. Disruptor：CPU level 并行计算，进程内通信
 2.1 Mechanical Sympathy
-找出系统中不能并行的瓶颈，并避免之
+    找出系统中不能并行的瓶颈，并避免之
 2.2 队列，有锁，任何类型的锁都是瓶颈，
 2.2.1 Lock &amp; CAS
 2.2.2 Disruptor使用Memory Barrier保证多核之间的数据同步
 2.3 多级Cache，内存拷贝操作，比较慢，batch
-2.4 Disruptor Effect: 1. Throughput 2. Latency</li>
-<li>Parallel并行提高性能的其他应用
+2.4 Disruptor Effect: 1. Throughput 2. Latency
+3. Parallel并行提高性能的其他应用
 3.1 BigPipe
-3.2 Reactive programming 响应式编程</li>
-</ol>
+3.2 Reactive programming 响应式编程</p>
       </section>
     </div>
 
