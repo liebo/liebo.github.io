@@ -34,13 +34,90 @@
 <h1>
 <a name="queue-problem" class="anchor" href="#queue-problem"><span class="octicon octicon-link"></span></a>queue problem</h1>
 
-<p>consider the basic queue processing, a lot of people need to buy their meals. as the boss of fast food, what are you going to do to serve more customers? imagine you employ only one waitress, so only one queue process all request. in order to improve throughput, the waitress must be stronger and fast hands. </p>
+<h2>
+<a name="real-world" class="anchor" href="#real-world"><span class="octicon octicon-link"></span></a>real world</h2>
 
-<p>what is the technology counterpart? more's law:</p>
+<p>consider the basic queue processing, a lot of people need to buy their meals. as the boss of fast food, what are you supposed to do to serve more customers? imagine you employ only one waitress, so only one queue process all request. in order to improve throughput, the waitress must have fast hands. this is called scale up</p>
 
-<p><img src="images/blacktocat.png" alt="Moore"></p>
+<p><img src="images/fasthand.png" alt="Fasthand"></p>
+
+<p>however the speed of waitress has a limit, if you can not hire a waitress with faster hand, what would you do? yes! hire another waitress, so the two waitress can process request parallel, and the total throughput is doubled. this is called scale out</p>
+
+<p><img src="images/morewaitress.png" alt="Morewaitress"></p>
+
+<h2>
+<a name="technology-world" class="anchor" href="#technology-world"><span class="octicon octicon-link"></span></a>technology world</h2>
+
+<p>what is the technology counterpart? Parallel programming. when the cpu processor speed can increase, only one core is needed, and all the request is processed serial, the processor speed increase results in throughput and latency improvement. but now the cpu speed can not increase any more over 3GHZ, so more cores are introduced, and parallel programming is a must. the cpu speed no longer obey moore law, but the core numbers still obey.</p>
 
 <p><img src="Moore.svg" alt="Moore svg"></p>
+
+<h1>
+<a name="staged" class="anchor" href="#staged"><span class="octicon octicon-link"></span></a>staged</h1>
+
+<h2>
+<a name="real-world-1" class="anchor" href="#real-world-1"><span class="octicon octicon-link"></span></a>real world</h2>
+
+<p>Your fast food is now grows rapidly, so you must extend your business to multiple cities, even multiple counties, so how request are processed? Again all the fast food is processing request in parallel, how ever as the boss you still need manage all the employees. but you can not manage all of them by yourself, so you hire managers to manager part of employers, and let them report to you. an organization layer forms. in this organization, there is multiple stages, any stage is responsible to process requests and then pass batch results to up stage. </p>
+
+<p><img src="organization.png" alt="Organization charts"></p>
+
+<h2>
+<a name="technology-world-1" class="anchor" href="#technology-world-1"><span class="octicon octicon-link"></span></a>technology world</h2>
+
+<p>A program is split into multiple stages, and every stage compute in parallel. by increase number of processors, the compute is speed up. </p>
+
+<h1>
+<a name="speedup" class="anchor" href="#speedup"><span class="octicon octicon-link"></span></a>speedup</h1>
+
+<p>can we speed up all the time? In real world there is all kind of inefficiency. one department must depend on another. How can we optimize process? here comes the Amdahl's law.</p>
+
+<p><strong>Amdahl's law</strong></p>
+
+<p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. if %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are. </p>
+
+<p><img src="amdahl.png" alt="Amdahl law"></p>
+
+<h1>
+<a name="optimization" class="anchor" href="#optimization"><span class="octicon octicon-link"></span></a>optimization</h1>
+
+<p>find the bottleneck cant not parallel.</p>
+
+<h2>
+<a name="real-world-2" class="anchor" href="#real-world-2"><span class="octicon octicon-link"></span></a>real world</h2>
+
+<p>one way to remove dependency between departments in the same stage</p>
+
+<h2>
+<a name="disruptor" class="anchor" href="#disruptor"><span class="octicon octicon-link"></span></a>disruptor</h2>
+
+<pre><code>    kernel context switch
+cas complex and lock instruction pipeline
+disruptor lock free
+disruptor use sequence
+memory barriar
+invalidate queue
+write in order
+read in order
+no need access main memory
+</code></pre>
+
+<h2>
+<a name="real-world-3" class="anchor" href="#real-world-3"><span class="octicon octicon-link"></span></a>real world</h2>
+
+<p>batch</p>
+
+<h2>
+<a name="disruptor-1" class="anchor" href="#disruptor-1"><span class="octicon octicon-link"></span></a>disruptor</h2>
+
+<pre><code>    l1 l2 l3 cache main memory
+cache line padding
+false sharing
+disruptor use ringbuffer
+</code></pre>
+
+<h1>
+<a name="effect-of-disruptor" class="anchor" href="#effect-of-disruptor"><span class="octicon octicon-link"></span></a>effect of disruptor</h1>
 
 <p>1.1 排队问题：两个性能指标：吞吐量、延时
 1.2 串行：麦当劳收银员，换一个动作快的，吞吐量/延时线性提高。Scale up 
