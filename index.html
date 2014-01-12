@@ -27,75 +27,85 @@
     <div class="container">
       <section id="main_content">
         <h1>
-<a name="technology-is-similar-thought-behind-is-the-key" class="anchor" href="#technology-is-similar-thought-behind-is-the-key"><span class="octicon octicon-link"></span></a>technology is similar, thought behind is the key</h1>
+<a name="what-is-disruptor" class="anchor" href="#what-is-disruptor"><span class="octicon octicon-link"></span></a>What is disruptor</h1>
 
-<p>so we start from the real world examples, we will find the idea behind technology is counterpart of real world cases.</p>
+<p>LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. because of its high performance, disruptor is first applied in financial and messaging systems.</p>
+
+<p><img src="images/throughput.png" alt="Throughput" title="disruptor throughput compared to queue"></p>
+
+<p><img src="images/latency.png" alt="Latency" title="latency compared to queue"></p>
+
+<p>Why is disruptor so fast, because it shows mechanical sympathy to modern CPU designs. In following paragraphs, I will try to explain this step by step.</p>
+
+<blockquote>
+<p>Technology is similar, thought behind is the key.</p>
+</blockquote>
 
 <h1>
-<a name="queue-problem" class="anchor" href="#queue-problem"><span class="octicon octicon-link"></span></a>queue problem</h1>
+<a name="parallel-programming" class="anchor" href="#parallel-programming"><span class="octicon octicon-link"></span></a>parallel programming</h1>
 
 <h2>
 <a name="real-world" class="anchor" href="#real-world"><span class="octicon octicon-link"></span></a>real world</h2>
 
-<p>consider the basic queue processing, a lot of people need to buy their meals. as the boss of fast food, what are you supposed to do to serve more customers? imagine you employ only one waitress, so only one queue process all request. in order to improve throughput, the waitress must have fast hands. this is called scale up</p>
+<p>The idea behind disruptor is similar to real world cases. imaging you are the boss of fast food restaurant, what are you supposed to do to serve more customers? You can hire a waitress with fast hands.</p>
 
-<p><img src="images/fasthand.png" alt="Fasthand"></p>
+<p><img src="images/fasthand.jpg" alt="Fasthand"></p>
 
-<p>however the speed of waitress has a limit, if you can not hire a waitress with faster hand, what would you do? yes! hire another waitress, so the two waitress can process request parallel, and the total throughput is doubled. this is called scale out</p>
+<p>However the speed of waitress is limited, so you hire another waitress. Now the two waitresses process requests in parallel, and the total throughput is doubled.</p>
 
 <p><img src="images/morewaitress.png" alt="Morewaitress"></p>
 
 <h2>
 <a name="technology-world" class="anchor" href="#technology-world"><span class="octicon octicon-link"></span></a>technology world</h2>
 
-<p>what is the technology counterpart? Parallel programming. when the cpu processor speed can increase, only one core is needed, and all the request is processed serial, the processor speed increase results in throughput and latency improvement. but now the cpu speed can not increase any more over 3GHZ, so more cores are introduced, and parallel programming is a must. the cpu speed no longer obey moore law, but the core numbers still obey.</p>
+<p>Parallel programming. with a high speed CPU processor speed, programs can run fast, result in higher throughput and lower latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs need to run in parallel. the cpu speed no longer obey moore law, but the core numbers still obey.</p>
 
-<p><img src="Moore.svg" alt="Moore svg"></p>
+<p><img src="Moore.svg" alt="Moore svg" title="CPU speed is limited, but the core numbers still obey Moore's law"></p>
 
 <h1>
-<a name="staged" class="anchor" href="#staged"><span class="octicon octicon-link"></span></a>staged</h1>
+<a name="staged-processing" class="anchor" href="#staged-processing"><span class="octicon octicon-link"></span></a>staged processing</h1>
 
 <h2>
 <a name="real-world-1" class="anchor" href="#real-world-1"><span class="octicon octicon-link"></span></a>real world</h2>
 
-<p>Your fast food is now grows rapidly, so you must extend your business to multiple cities, even multiple counties, so how request are processed? Again all the fast food is processing request in parallel, how ever as the boss you still need manage all the employees. but you can not manage all of them by yourself, so you hire managers to manager part of employers, and let them report to you. an organization layer forms. in this organization, there is multiple stages, any stage is responsible to process requests and then pass batch results to up stage. </p>
+<p>Your restaurant grows rapidly, so you must extend your business to more cities, even more counties. As the boss you can not manage all of your employee by yourself, instead you hire managers. </p>
 
-<p><img src="organization.png" alt="Organization charts"></p>
+<p><img src="organization.png" alt="Organization charts" title="organization is composed of multiple stages"></p>
 
 <h2>
 <a name="technology-world-1" class="anchor" href="#technology-world-1"><span class="octicon octicon-link"></span></a>technology world</h2>
 
-<p>A program is split into multiple stages, and every stage compute in parallel. by increase number of processors, the compute is speed up. </p>
+<p>A program is also split into multiple stages, and every stage compute in parallel. by increasing number of processors, the program speed up. </p>
 
 <h1>
-<a name="speedup" class="anchor" href="#speedup"><span class="octicon octicon-link"></span></a>speedup</h1>
+<a name="amdahls-law" class="anchor" href="#amdahls-law"><span class="octicon octicon-link"></span></a>Amdahl's law</h1>
 
-<p>can we speed up all the time? In real world there is all kind of inefficiency. one department must depend on another. How can we optimize process? here comes the Amdahl's law.</p>
+<p>In real world there is all kind of inefficiency. one department may depend on another. In a program, how can we optimize process in such a parallel and staged environment? Here comes the Amdahl's law.</p>
 
 <p><strong>Amdahl's law</strong></p>
 
-<p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. if %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are. </p>
+<p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. If %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are. </p>
 
 <p><img src="amdahl.png" alt="Amdahl law"></p>
 
 <h1>
 <a name="optimization" class="anchor" href="#optimization"><span class="octicon octicon-link"></span></a>optimization</h1>
 
-<p>find the bottleneck cant not parallel.</p>
+<p>No matter in real or technology world, to remove inefficiency, just find the bottleneck that can not run in parallel.</p>
 
 <h2>
 <a name="real-world-2" class="anchor" href="#real-world-2"><span class="octicon octicon-link"></span></a>real world</h2>
 
-<p>manager collect requests from employee, they do not send every request to you, instead they wait until 100 requests, after preprocess it, batch send to you.</p>
+<p>manager collect status of employees, but they do not send to you one by one, instead they wait until all the status is collected, and send to you in a batch.</p>
 
 <h2>
-<a name="disruptor" class="anchor" href="#disruptor"><span class="octicon octicon-link"></span></a>disruptor</h2>
+<a name="technology-world-2" class="anchor" href="#technology-world-2"><span class="octicon octicon-link"></span></a>technology world</h2>
 
 <p>Modern CPU has multiple level caches, since access main memory is expensive, the cache batch read data from main memory. Cache miss result in main memory access. </p>
 
 <p>Disruptor use ring buffer to place objects pad together in memory so as to avoid false sharing and cache miss.</p>
 
-<p><img src="cpu%20cache.png" alt="cpu cache"></p>
+<p><img src="cpucache.png" alt="cpu cache"></p>
 
 <p><img src="ringbuffer.png" alt="ringbuffer"></p>
 
@@ -105,7 +115,7 @@
 <p>staff manager and quality manager both manage employee. they can exchange status of employee directly since their offices are close to each other.</p>
 
 <h2>
-<a name="disruptor-1" class="anchor" href="#disruptor-1"><span class="octicon octicon-link"></span></a>disruptor</h2>
+<a name="technology" class="anchor" href="#technology"><span class="octicon octicon-link"></span></a>technology</h2>
 
 <p>synchronization for shared resource is expensive. </p>
 
@@ -122,7 +132,9 @@
 <p><img src="memory%20barriar.png" alt="Memory barriar"></p>
 
 <h1>
-<a name="effect-of-disruptor" class="anchor" href="#effect-of-disruptor"><span class="octicon octicon-link"></span></a>effect of disruptor</h1>
+<a name="reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h1>
+
+<p>Memory Barriers: a Hardware View for Software Hackers</p>
       </section>
     </div>
 
