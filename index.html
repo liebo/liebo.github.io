@@ -29,7 +29,7 @@
         <h1>
 <a name="what-is-disruptor" class="anchor" href="#what-is-disruptor"><span class="octicon octicon-link"></span></a>What is disruptor</h1>
 
-<p>LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. because of its high performance, disruptor is first applied in financial and messaging systems.</p>
+<p>LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. Because of its high performance, disruptor is first applied in financial and messaging systems.</p>
 
 <p><img src="images/throughput.png" alt="Throughput" title="disruptor throughput compared to queue"></p>
 
@@ -44,43 +44,33 @@
 <h1>
 <a name="parallel-programming" class="anchor" href="#parallel-programming"><span class="octicon octicon-link"></span></a>parallel programming</h1>
 
-<h2>
-<a name="real-world" class="anchor" href="#real-world"><span class="octicon octicon-link"></span></a>real world</h2>
-
 <p>The idea behind disruptor is similar to real world cases. imaging you are the boss of fast food restaurant, what are you supposed to do to serve more customers? You can hire a waitress with fast hands.</p>
 
 <p><img src="images/fasthand.jpg" alt="Fasthand"></p>
 
 <p>However the speed of waitress is limited, so you hire another waitress. Now the two waitresses process requests in parallel, and the total throughput is doubled.</p>
 
-<p><img src="images/morewaitress.png" alt="Morewaitress"></p>
+<p><img src="images/morewaitress.gif" alt="Morewaitress"></p>
 
-<h2>
-<a name="technology-world" class="anchor" href="#technology-world"><span class="octicon octicon-link"></span></a>technology world</h2>
-
-<p>Parallel programming. with a high speed CPU processor speed, programs can run fast, result in higher throughput and lower latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs need to run in parallel. the cpu speed no longer obey moore law, but the core numbers still obey.</p>
+<p>Parallel programming is just the same. with a high speed CPU, programs can run fast, result in high throughput and low latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs need to run in parallel. </p>
 
 <p><img src="Moore.svg" alt="Moore svg" title="CPU speed is limited, but the core numbers still obey Moore's law"></p>
 
 <h1>
 <a name="staged-processing" class="anchor" href="#staged-processing"><span class="octicon octicon-link"></span></a>staged processing</h1>
 
-<h2>
-<a name="real-world-1" class="anchor" href="#real-world-1"><span class="octicon octicon-link"></span></a>real world</h2>
-
 <p>Your restaurant grows rapidly, so you must extend your business to more cities, even more counties. As the boss you can not manage all of your employee by yourself, instead you hire managers. </p>
 
 <p><img src="organization.png" alt="Organization charts" title="organization is composed of multiple stages"></p>
 
-<h2>
-<a name="technology-world-1" class="anchor" href="#technology-world-1"><span class="octicon octicon-link"></span></a>technology world</h2>
+<p>Modern CPU has multiple level caches, and the architecture is similar to an organization.</p>
 
-<p>A program is also split into multiple stages, and every stage compute in parallel. by increasing number of processors, the program speed up. </p>
+<p><img src="cache.png" alt="CPU cache"></p>
 
 <h1>
 <a name="amdahls-law" class="anchor" href="#amdahls-law"><span class="octicon octicon-link"></span></a>Amdahl's law</h1>
 
-<p>In real world there is all kind of inefficiency. one department may depend on another. In a program, how can we optimize process in such a parallel and staged environment? Here comes the Amdahl's law.</p>
+<p>In real world there is all kind of inefficiency, one department may depend on another. In a program, how can we optimize process in such a parallel and staged environment? Here comes the Amdahl's law.</p>
 
 <p><strong>Amdahl's law</strong></p>
 
@@ -91,31 +81,23 @@
 <h1>
 <a name="optimization" class="anchor" href="#optimization"><span class="octicon octicon-link"></span></a>optimization</h1>
 
-<p>No matter in real or technology world, to remove inefficiency, just find the bottleneck that can not run in parallel.</p>
-
 <h2>
-<a name="real-world-2" class="anchor" href="#real-world-2"><span class="octicon octicon-link"></span></a>real world</h2>
+<a name="batch-message" class="anchor" href="#batch-message"><span class="octicon octicon-link"></span></a>Batch message</h2>
+
+<p>To remove inefficiency, just find the bottleneck that can not run in parallel.</p>
 
 <p>manager collect status of employees, but they do not send to you one by one, instead they wait until all the status is collected, and send to you in a batch.</p>
 
-<h2>
-<a name="technology-world-2" class="anchor" href="#technology-world-2"><span class="octicon octicon-link"></span></a>technology world</h2>
-
-<p>Modern CPU has multiple level caches, since access main memory is expensive, the cache batch read data from main memory. Cache miss result in main memory access. </p>
+<p>Similarly, CPU caches is split to cache lines, since access main memory is expensive, the cache batch read data from main memory. Cache miss result in main memory access. </p>
 
 <p>Disruptor use ring buffer to place objects pad together in memory so as to avoid false sharing and cache miss.</p>
-
-<p><img src="cpucache.png" alt="cpu cache"></p>
 
 <p><img src="ringbuffer.png" alt="ringbuffer"></p>
 
 <h2>
-<a name="real-world-3" class="anchor" href="#real-world-3"><span class="octicon octicon-link"></span></a>real world</h2>
+<a name="synchronization" class="anchor" href="#synchronization"><span class="octicon octicon-link"></span></a>Synchronization</h2>
 
-<p>staff manager and quality manager both manage employee. they can exchange status of employee directly since their offices are close to each other.</p>
-
-<h2>
-<a name="technology" class="anchor" href="#technology"><span class="octicon octicon-link"></span></a>technology</h2>
+<p>staff manager and product manager both collect information from employees. they can exchange status of employees directly since their offices are close to each other.</p>
 
 <p>synchronization for shared resource is expensive. </p>
 
@@ -124,12 +106,9 @@
 <li>CAS: lock instruction pipeline and complex to program.</li>
 </ol><p><img src="lockpenalty.png" alt="Lock penalty"></p>
 
-<h3>
-<a name="lock-free" class="anchor" href="#lock-free"><span class="octicon octicon-link"></span></a>Lock free</h3>
+<p>Disruptor use lock free memory barrier to synchronize. Two cores in CPU talk to each other directly via memory barriar to exchange resource state. </p>
 
-<p>Two cores in CPU talk to each other directly via memory barriar to exchange resource state. </p>
-
-<p><img src="memory%20barriar.png" alt="Memory barriar"></p>
+<p><img src="memorybarriar.png" alt="Memory barriar"></p>
 
 <h1>
 <a name="reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h1>
