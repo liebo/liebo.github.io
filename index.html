@@ -8,14 +8,14 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <title>Disruptor Illustrated by liebo</title>
+    <title>Disruptor Illustrated with Metaphor by liebo</title>
   </head>
 
   <body>
 
     <header>
       <div class="container">
-        <h1>Disruptor Illustrated</h1>
+        <h1>Disruptor Illustrated with Metaphor</h1>
         <h2></h2>
 
         <section id="downloads">
@@ -35,20 +35,22 @@
 
 <p><img src="images/latency.png" alt="Latency" title="latency compared to queue"></p>
 
-<p>Why is disruptor so fast, because it shows mechanical sympathy to modern CPU designs. In following paragraphs, I will try to explain this step by step.</p>
+<p>Why is disruptor so fast, because it shows mechanical sympathy to modern CPU designs. In following paragraphs, I will try to explain this with metaphor.</p>
 
 <blockquote>
-<p>Technology is similar, thought behind is the key.</p>
+<p>begin
+Technology is similar, thought behind is the key.
+end</p>
 </blockquote>
 
 <h1>
 <a name="parallel-programming" class="anchor" href="#parallel-programming"><span class="octicon octicon-link"></span></a>parallel programming</h1>
 
-<p>The idea behind disruptor is similar to real world cases. imaging you are the boss of fast food restaurant, what are you supposed to do to serve more customers? You can hire a waitress with fast hands.</p>
+<p><em>The idea behind Disruptor is similar to real world cases. imaging you are the boss of fast food restaurant, what are you supposed to do to serve more customers? You can hire a waitress with fast hands.</em></p>
 
 <p><img src="images/fasthand.jpg" alt="Fasthand"></p>
 
-<p>However the speed of waitress is limited, so you hire another waitress. Now the two waitresses process requests in parallel, and the total throughput is doubled.</p>
+<p><em>However the speed of waitress is limited, so you hire another waitress. Now the two waitresses process requests in parallel, and the total throughput is doubled.</em></p>
 
 <p><img src="images/morewaitress.gif" alt="Morewaitress"></p>
 
@@ -59,7 +61,7 @@
 <h1>
 <a name="staged-processing" class="anchor" href="#staged-processing"><span class="octicon octicon-link"></span></a>staged processing</h1>
 
-<p>Your restaurant grows rapidly, so you must extend your business to more cities, even more counties. As the boss you can not manage all of your employee by yourself, instead you hire managers. </p>
+<p>_Your restaurant grows rapidly, so you must extend your business to more cities, even more counties. As the boss you can not manage all of your employee by yourself, instead you hire managers. _</p>
 
 <p><img src="organizational_charts.gif" alt="Organization charts" title="organization is composed of multiple stages"></p>
 
@@ -70,7 +72,7 @@
 <h1>
 <a name="amdahls-law" class="anchor" href="#amdahls-law"><span class="octicon octicon-link"></span></a>Amdahl's law</h1>
 
-<p>In real world there is all kind of inefficiency, one department may depend on another. In a program, how can we optimize process in such a parallel and staged environment? Here comes the Amdahl's law.</p>
+<p><em>In real world there is all kind of inefficiency, one department may depend on another.</em> In a program, how can we optimize process in such a parallel and staged environment? Here comes the Amdahl's law.</p>
 
 <p><strong>Amdahl's law</strong></p>
 
@@ -86,7 +88,7 @@
 
 <p>To remove inefficiency, just find the bottleneck that can not run in parallel.</p>
 
-<p>manager collect status of employees, but they do not send to you one by one, instead they wait until all the status is collected, and send to you in a batch.</p>
+<p><em>manager collect status of employees, but they do not send to you one by one, instead they wait until all the status is collected, and send to you in a batch.</em></p>
 
 <p>Similarly, CPU caches is split to cache lines, since access main memory is expensive, the cache batch read data from main memory. Cache miss result in main memory access. </p>
 
@@ -97,7 +99,7 @@
 <h2>
 <a name="synchronization" class="anchor" href="#synchronization"><span class="octicon octicon-link"></span></a>Synchronization</h2>
 
-<p>staff manager and product manager both collect information from employees. they can exchange status of employees directly since their offices are close to each other.</p>
+<p><em>staff manager and product manager both collect information from employees. they can exchange status of employees directly since their offices are close to each other.</em></p>
 
 <p>synchronization for shared resource is expensive. </p>
 
