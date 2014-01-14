@@ -40,11 +40,11 @@
 
 <p>LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. Because of its high performance, disruptor is first applied in financial and messaging systems.</p>
 
-<p>disruptor throughput compared to queue<br><img src="images/throughput.png" alt="Throughput"></p>
+<p>Disruptor throughput compared to queue<br><img src="images/throughput.png" alt="Throughput"></p>
 
-<p>latency compared to queue<br><img src="images/latency.png" alt="Latency"></p>
+<p>Latency compared to queue<br><img src="images/latency.png" alt="Latency"></p>
 
-<p>Why is disruptor so fast, because it shows mechanical sympathy to modern CPU designs. In following paragraphs, I will try to explain this with metaphor.</p>
+<p>Disruptor is so fast because it shows mechanical sympathy to modern CPU designs. The best way to explain technology is by metaphor, as is said:</p>
 
 <blockquote>
 <p></p>
@@ -55,26 +55,38 @@ Technology is similar, thought behind is the key.
 </blockquote>
 
 <h1>
-<a name="parallel-programming" class="anchor" href="#parallel-programming"><span class="octicon octicon-link"></span></a>parallel programming</h1>
+<a name="parallel-programming" class="anchor" href="#parallel-programming"><span class="octicon octicon-link"></span></a>Parallel Programming</h1>
 
-<p><em>The idea behind Disruptor is similar to real world cases. imaging you are the boss of fast food restaurant, what are you supposed to do to serve more customers? You can hire a waitress with fast hands.</em></p>
+<h2>
+<a name="metaphor-in-real-world" class="anchor" href="#metaphor-in-real-world"><span class="octicon octicon-link"></span></a>Metaphor in real world</h2>
+
+<p><em>You are the boss of a fast food restaurant, what are you supposed to do to serve more customers? You hire a waitress with fast hands.</em></p>
 
 <p>Waitress with fast hands<br><img src="images/fasthand.jpg" alt="Fasthand"></p>
 
-<p><em>However the speed of waitress is limited, so you hire another waitress. Now the two waitresses process requests in parallel, and the total throughput is doubled.</em></p>
+<p><em>However the speed of waitress is limited, so you hire another waitress. Now the two process requests in parallel, and total throughput is doubled.</em></p>
 
-<p>hire two waitresses<br><img src="images/morewaitress.gif" alt="Morewaitress" width="500"></p>
+<p>Hire two waitresses<br><img src="images/morewaitress.gif" alt="Morewaitress" width="500"></p>
+
+<h2>
+<a name="technology" class="anchor" href="#technology"><span class="octicon octicon-link"></span></a>Technology</h2>
 
 <p>Parallel programming is just the same. with a high speed CPU, programs can run fast, result in high throughput and low latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs need to run in parallel. </p>
 
-<p>CPU speed is limited, but the core numbers obey Moore's law<br><img src="images/moore.jpg" alt="Moore svg" title="CPU speed is limited, but the core numbers still obey Moore's law"></p>
+<p>CPU speed is limited, but the core numbers obey Moore's law<br><img src="images/moore.jpg" alt="Moore svg"></p>
 
 <h1>
 <a name="staged-processing" class="anchor" href="#staged-processing"><span class="octicon octicon-link"></span></a>staged processing</h1>
 
+<h2>
+<a name="metaphor" class="anchor" href="#metaphor"><span class="octicon octicon-link"></span></a>Metaphor</h2>
+
 <p><em>Your restaurant grows rapidly, so you must extend your business to more cities, even more counties. As the boss you can not manage all of your employee by yourself, instead you hire managers.</em></p>
 
 <p>an organization is composed of multiple stages<br><img src="images/organizational_charts.gif" alt="Organization charts"></p>
+
+<h2>
+<a name="technology-1" class="anchor" href="#technology-1"><span class="octicon octicon-link"></span></a>Technology</h2>
 
 <p>Modern CPU has multiple level caches, and the architecture is similar to an organization.</p>
 
@@ -83,7 +95,13 @@ Technology is similar, thought behind is the key.
 <h1>
 <a name="amdahls-law" class="anchor" href="#amdahls-law"><span class="octicon octicon-link"></span></a>Amdahl's law</h1>
 
+<h2>
+<a name="metaphor-1" class="anchor" href="#metaphor-1"><span class="octicon octicon-link"></span></a>Metaphor</h2>
+
 <p><em>In real world there is all kind of inefficiency, one department may depend on another.</em> </p>
+
+<h2>
+<a name="technology-2" class="anchor" href="#technology-2"><span class="octicon octicon-link"></span></a>Technology</h2>
 
 <p>In a program, how can we optimize process in such a parallel and staged environment? Here comes the Amdahl's law.</p>
 
@@ -93,15 +111,18 @@ Technology is similar, thought behind is the key.
 
 <p>Amdahl's law<br><img src="images/amdahl.png" alt="Amdahl's law"></p>
 
-<h1>
-<a name="optimization" class="anchor" href="#optimization"><span class="octicon octicon-link"></span></a>optimization</h1>
-
-<h2>
-<a name="batch-message" class="anchor" href="#batch-message"><span class="octicon octicon-link"></span></a>Batch message</h2>
-
 <p>To remove inefficiency, just find the bottleneck that can not run in parallel.</p>
 
+<h1>
+<a name="batch-message" class="anchor" href="#batch-message"><span class="octicon octicon-link"></span></a>Batch message</h1>
+
+<h2>
+<a name="metaphor-2" class="anchor" href="#metaphor-2"><span class="octicon octicon-link"></span></a>Metaphor</h2>
+
 <p><em>manager collect status of employees, but they do not send to you one by one, instead they wait until all the status is collected, and send to you in a batch.</em></p>
+
+<h2>
+<a name="technology-3" class="anchor" href="#technology-3"><span class="octicon octicon-link"></span></a>Technology</h2>
 
 <p>Similarly, CPU caches is split to cache lines, since access main memory is expensive, the cache batch read data from main memory. Cache miss result in main memory access. </p>
 
@@ -110,9 +131,15 @@ Technology is similar, thought behind is the key.
 <p>ring buffer<br><img src="images/ringbuffer.jpg" alt="ringbuffer"></p>
 
 <h2>
-<a name="synchronization" class="anchor" href="#synchronization"><span class="octicon octicon-link"></span></a>Synchronization</h2>
+<a name="lock-free-synchronization-between-concurrent-threads" class="anchor" href="#lock-free-synchronization-between-concurrent-threads"><span class="octicon octicon-link"></span></a>Lock free synchronization between concurrent threads</h2>
+
+<h1>
+<a name="metaphor-3" class="anchor" href="#metaphor-3"><span class="octicon octicon-link"></span></a>Metaphor</h1>
 
 <p><em>staff manager and product manager both collect information from employees. they can exchange status of employees directly since their offices are close to each other.</em></p>
+
+<h1>
+<a name="technology-4" class="anchor" href="#technology-4"><span class="octicon octicon-link"></span></a>Technology</h1>
 
 <p>synchronization for shared resource is expensive. </p>
 
@@ -128,7 +155,16 @@ Technology is similar, thought behind is the key.
 <h1>
 <a name="reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h1>
 
-<p>Memory Barriers: a Hardware View for Software Hackers</p>
+<ol>
+<li><a href="http://lmax-exchange.github.io/disruptor/">LMAX disruptor on github</a></li>
+<li><a href="http://disruptor.googlecode.com/files/Disruptor-1.0.pdf">Disruptor Technical Paper</a></li>
+<li><a href="http://mechanical-sympathy.blogspot.com/">Mechanical sympathy</a></li>
+<li><a href="http://www.infoq.com/presentations/LMAX">Disruptor presentation@QCON</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Moore_Law">Moore's law@Wikipedia</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Amdahl's_law">Amdahl's law@Wikipedia</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Circular_buffer">Ring buffer@Wikipedia</a></li>
+<li><a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;ved=0CDAQFjAA&amp;url=http%3A%2F%2Fwww.rdrop.com%2F%7Epaulmck%2Fscalability%2Fpaper%2Fwhymb.2009.04.05a.pdf&amp;ei=cJfUUrS5BM2CogSWy4DIAw&amp;usg=AFQjCNHA6MjCwoLJFe5dQTye_uI9dimTNg&amp;sig2=tU3Q4l6EbVsTMf7fOqH5hA">Memory Barriers: a Hardware View for Software Hackers</a></li>
+</ol>
       </section>
 
     </div>
