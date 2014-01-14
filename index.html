@@ -73,7 +73,7 @@ Technology is similar, thought behind is the key.
 
 <p>Parallel programming is just the same. with a high speed CPU, programs can run fast, result in high throughput and low latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs need to run in parallel. </p>
 
-<p>CPU speed is limited, but the core numbers obey Moore's law<br><img src="images/moore.jpg" alt="Moore svg"></p>
+<p>CPU speed is limited, but the core numbers obey Moore's law<br><img src="images/moore.jpg" alt="Moore's law"></p>
 
 <h1>
 <a name="staged-processing" class="anchor" href="#staged-processing"><span class="octicon octicon-link"></span></a>staged processing</h1>
@@ -105,8 +105,6 @@ Technology is similar, thought behind is the key.
 
 <p>In a program, how can we optimize process in such a parallel and staged environment? Here comes the Amdahl's law.</p>
 
-<p><strong>Amdahl's law</strong></p>
-
 <p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. If %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are. </p>
 
 <p>Amdahl's law<br><img src="images/amdahl.png" alt="Amdahl's law"></p>
@@ -114,7 +112,7 @@ Technology is similar, thought behind is the key.
 <p>To remove inefficiency, just find the bottleneck that can not run in parallel.</p>
 
 <h1>
-<a name="batch-message" class="anchor" href="#batch-message"><span class="octicon octicon-link"></span></a>Batch message</h1>
+<a name="optimization-batch-message" class="anchor" href="#optimization-batch-message"><span class="octicon octicon-link"></span></a>Optimization: Batch message</h1>
 
 <h2>
 <a name="metaphor-2" class="anchor" href="#metaphor-2"><span class="octicon octicon-link"></span></a>Metaphor</h2>
@@ -128,10 +126,10 @@ Technology is similar, thought behind is the key.
 
 <p>Disruptor use ring buffer to place objects pad together in memory so as to avoid false sharing and cache miss.</p>
 
-<p>ring buffer<br><img src="images/ringbuffer.jpg" alt="ringbuffer"></p>
+<p>Ring buffer<br><img src="images/ringbuffer.jpg" alt="ringbuffer"></p>
 
 <h2>
-<a name="lock-free-synchronization-between-concurrent-threads" class="anchor" href="#lock-free-synchronization-between-concurrent-threads"><span class="octicon octicon-link"></span></a>Lock free synchronization between concurrent threads</h2>
+<a name="optimization-lock-free-synchronization" class="anchor" href="#optimization-lock-free-synchronization"><span class="octicon octicon-link"></span></a>Optimization: Lock free synchronization</h2>
 
 <h1>
 <a name="metaphor-3" class="anchor" href="#metaphor-3"><span class="octicon octicon-link"></span></a>Metaphor</h1>
