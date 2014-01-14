@@ -40,13 +40,9 @@
 
 <p>LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. Because of its high performance, disruptor is first applied in financial and messaging systems.</p>
 
-<p>disruptor throughput compared to queue</p>
+<p>disruptor throughput compared to queue<br><img src="images/throughput.png" alt="Throughput"></p>
 
-<p><img src="images/throughput.png" alt="Throughput"></p>
-
-<p>latency compared to queue</p>
-
-<p><img src="images/latency.png" alt="Latency"></p>
+<p>latency compared to queue<br><img src="images/latency.png" alt="Latency"></p>
 
 <p>Why is disruptor so fast, because it shows mechanical sympathy to modern CPU designs. In following paragraphs, I will try to explain this with metaphor.</p>
 
@@ -63,26 +59,26 @@ Technology is similar, thought behind is the key.
 
 <p><em>The idea behind Disruptor is similar to real world cases. imaging you are the boss of fast food restaurant, what are you supposed to do to serve more customers? You can hire a waitress with fast hands.</em></p>
 
-<p><img src="images/fasthand.jpg" alt="Fasthand"></p>
+<p>Waitress with fast hands<br><img src="images/fasthand.jpg" alt="Fasthand"></p>
 
 <p><em>However the speed of waitress is limited, so you hire another waitress. Now the two waitresses process requests in parallel, and the total throughput is doubled.</em></p>
 
-<p><img src="images/morewaitress.gif" alt="Morewaitress" width="500"></p>
+<p>hire two waitresses<br><img src="images/morewaitress.gif" alt="Morewaitress" width="500"></p>
 
 <p>Parallel programming is just the same. with a high speed CPU, programs can run fast, result in high throughput and low latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs need to run in parallel. </p>
 
-<p><img src="images/moore.jpg" alt="Moore svg" title="CPU speed is limited, but the core numbers still obey Moore's law"></p>
+<p>CPU speed is limited, but the core numbers obey Moore's law<br><img src="images/moore.jpg" alt="Moore svg" title="CPU speed is limited, but the core numbers still obey Moore's law"></p>
 
 <h1>
 <a name="staged-processing" class="anchor" href="#staged-processing"><span class="octicon octicon-link"></span></a>staged processing</h1>
 
 <p><em>Your restaurant grows rapidly, so you must extend your business to more cities, even more counties. As the boss you can not manage all of your employee by yourself, instead you hire managers.</em></p>
 
-<p><img src="images/organizational_charts.gif" alt="Organization charts" title="organization is composed of multiple stages"></p>
+<p>an organization is composed of multiple stages<br><img src="images/organizational_charts.gif" alt="Organization charts"></p>
 
 <p>Modern CPU has multiple level caches, and the architecture is similar to an organization.</p>
 
-<p><img src="images/cache.png" alt="CPU cache"></p>
+<p>CPU cache contains multiple stages<br><img src="images/cache.png" alt="CPU cache"></p>
 
 <h1>
 <a name="amdahls-law" class="anchor" href="#amdahls-law"><span class="octicon octicon-link"></span></a>Amdahl's law</h1>
@@ -95,7 +91,7 @@ Technology is similar, thought behind is the key.
 
 <p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. If %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are. </p>
 
-<p><img src="images/amdahl.png" alt="Amdahl law"></p>
+<p>Amdahl's law<br><img src="images/amdahl.png" alt="Amdahl's law"></p>
 
 <h1>
 <a name="optimization" class="anchor" href="#optimization"><span class="octicon octicon-link"></span></a>optimization</h1>
@@ -111,7 +107,7 @@ Technology is similar, thought behind is the key.
 
 <p>Disruptor use ring buffer to place objects pad together in memory so as to avoid false sharing and cache miss.</p>
 
-<p><img src="images/ringbuffer.jpg" alt="ringbuffer"></p>
+<p>ring buffer<br><img src="images/ringbuffer.jpg" alt="ringbuffer"></p>
 
 <h2>
 <a name="synchronization" class="anchor" href="#synchronization"><span class="octicon octicon-link"></span></a>Synchronization</h2>
@@ -123,11 +119,11 @@ Technology is similar, thought behind is the key.
 <ol>
 <li>Lock: involves context switch, which is quite expensive.</li>
 <li>CAS: lock instruction pipeline and complex to program.</li>
-</ol><p><img src="images/lockpenalty.png" alt="Lock penalty"></p>
+</ol><p>lock penalty<br><img src="images/lockpenalty.png" alt="Lock penalty"></p>
 
 <p>Disruptor use lock free memory barrier to synchronize sequence of ring buffer. Two cores in CPU talk to each other directly via memory barrier to exchange resource state. </p>
 
-<p><img src="images/memorybarrier.png" alt="Memory barrier"></p>
+<p>memory barrier<br><img src="images/memorybarrier.png" alt="Memory barrier"></p>
 
 <h1>
 <a name="reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h1>
