@@ -111,7 +111,7 @@ Technology is similar, thought behind is the key.
 
 <p>Amdahl's law<br><img src="images/amdahl.png" alt="Amdahl's law"></p>
 
-<p>To remove inefficiency, just find the bottleneck that can not run in parallel, namely avoid share resources.</p>
+<p>To remove inefficiency, just find the bottleneck that can not run in parallel, namely avoid shared resources.</p>
 
 <h1>
 <a name="optimization-batch-message" class="anchor" href="#optimization-batch-message"><span class="octicon octicon-link"></span></a>Optimization: Batch message</h1>
@@ -148,7 +148,7 @@ Technology is similar, thought behind is the key.
 <li>CAS: lock instruction pipeline and complex to program.</li>
 </ol><p>lock penalty<br><img src="images/lockpenalty.png" alt="Lock penalty"></p>
 
-<p>Disruptor use lock free memory barrier to synchronize sequence of ring buffer. Two cores in CPU talk to each other directly via memory barrier to exchange resource state. </p>
+<p>Disruptor use lock free memory barrier to synchronize sequence of ring buffer. Two cores in CPU talk to each other directly via memory barrier to exchange resource state, so as to avoid accessing shared locks.</p>
 
 <p>memory barrier<br><img src="images/memorybarrier.png" alt="Memory barrier"></p>
 
