@@ -100,12 +100,14 @@ Technology is similar, thought behind is the key.
 <h2>
 <a name="metaphor-1" class="anchor" href="#metaphor-1"><span class="octicon octicon-link"></span></a>Metaphor</h2>
 
-<p><em>In real world there is all kind of inefficiency, one department may depend on another.</em> </p>
+<p><em>In real world there is all kind of inefficiency, one department may depend on another. That's why management theories exists.</em> </p>
 
 <h2>
 <a name="technology-2" class="anchor" href="#technology-2"><span class="octicon octicon-link"></span></a>Technology</h2>
 
-<p>In a program, how can we optimize process in such a parallel and staged environment? Here comes the Amdahl's law.</p>
+<p>In a program, how can we optimize process in such a parallel and staged environment? </p>
+
+<p><strong>Amdahl's law</strong></p>
 
 <p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. If %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are. </p>
 
@@ -116,6 +118,8 @@ Technology is similar, thought behind is the key.
 <h1>
 <a name="optimization-batch-message" class="anchor" href="#optimization-batch-message"><span class="octicon octicon-link"></span></a>Optimization: Batch message</h1>
 
+<p>The first bottleneck is main memory access, which is expensive.</p>
+
 <h2>
 <a name="metaphor-2" class="anchor" href="#metaphor-2"><span class="octicon octicon-link"></span></a>Metaphor</h2>
 
@@ -124,7 +128,7 @@ Technology is similar, thought behind is the key.
 <h2>
 <a name="technology-3" class="anchor" href="#technology-3"><span class="octicon octicon-link"></span></a>Technology</h2>
 
-<p>Similarly, Since access main memory is expensive, CPU cache is split to cache lines, and batch read data from main memory.  </p>
+<p>Similarly, CPU cache is split to cache lines, and batch read data from main memory.  </p>
 
 <p>Disruptor use ring buffer to place objects padding together in memory so as to avoid false sharing and cache miss.</p>
 
@@ -132,6 +136,8 @@ Technology is similar, thought behind is the key.
 
 <h1>
 <a name="optimization-lock-free-synchronization" class="anchor" href="#optimization-lock-free-synchronization"><span class="octicon octicon-link"></span></a>Optimization: Lock free synchronization</h1>
+
+<p>Another bottleneck is shared locks.</p>
 
 <h2>
 <a name="metaphor-3" class="anchor" href="#metaphor-3"><span class="octicon octicon-link"></span></a>Metaphor</h2>
