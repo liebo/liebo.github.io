@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://liebo.github.io
+title: Embrace Change
+subtitle: Half water, half of the flame
+author: liebo
 simple_search: https://www.google.com/search
 description:
 
