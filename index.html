@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Disruptor Illustrated by Metaphor by liebo</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/liebo">View On GitHub</a></li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Disruptor Illustrated by Metaphor</h1>
+          <p>disruptor, ring buffer, high performance, concurrent, parallel programming</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/liebo">liebo</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a name="what-is-disruptor" class="anchor" href="#what-is-disruptor"><span class="octicon octicon-link"></span></a>What is disruptor</h1>
+
+<p>LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. Disruptor is first applied in financial and messaging systems for its high performance.</p>
+
+<p>Disruptor throughput compared to queue<br><img src="images/throughput.png" alt="Throughput"></p>
+
+<p>Latency compared to queue<br><img src="images/latency.png" alt="Latency"></p>
+
+<p>Showing mechanical sympathy to modern CPU designs, disruptor is so fast in a parallel and staged environment. Following explains this in detail. </p>
+
+<h1>
+<a name="parallel-programming" class="anchor" href="#parallel-programming"><span class="octicon octicon-link"></span></a>Parallel Programming</h1>
+
+<p>The best way to explain technology is by metaphor. As is said:</p>
+
+<blockquote>
+<p></p>
+<p>
+Technology is similar, thought behind is the key.
+</p>
+<p></p>
+</blockquote>
+
+<h2>
+<a name="metaphor-in-real-world" class="anchor" href="#metaphor-in-real-world"><span class="octicon octicon-link"></span></a>Metaphor in real world</h2>
+
+<p><em>You are the boss of a fast food restaurant, what are you supposed to do to serve more customers? You hire a waitress with fast hands.</em></p>
+
+<p>Waitress with fast hands<br><img src="images/fasthand.jpg" alt="Fasthand"></p>
+
+<p><em>However the speed of waitress is limited, so you hire another waitress. Now the two process requests in parallel, and total throughput is doubled.</em></p>
+
+<p>Hire two waitresses<br><img src="images/morewaitress.gif" alt="Morewaitress" width="500"></p>
+
+<h2>
+<a name="technology" class="anchor" href="#technology"><span class="octicon octicon-link"></span></a>Technology</h2>
+
+<p>Parallel programming is just the same. with a high speed CPU, programs can run fast, result in high throughput and low latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs can run in parallel. </p>
+
+<p>CPU speed is limited, but the core numbers obey Moore's law<br><img src="images/moore.jpg" alt="Moore's law"></p>
+
+<h1>
+<a name="staged-processing" class="anchor" href="#staged-processing"><span class="octicon octicon-link"></span></a>Staged processing</h1>
+
+<h2>
+<a name="metaphor" class="anchor" href="#metaphor"><span class="octicon octicon-link"></span></a>Metaphor</h2>
+
+<p><em>Your restaurant grows rapidly, so you must extend your business to more cities, even more countries. As the boss you can not manage all of your employee by yourself, instead you hire managers.</em></p>
+
+<p>an organization is composed of multiple stages<br><img src="images/organizational_charts.gif" alt="Organization charts"></p>
+
+<h2>
+<a name="technology-1" class="anchor" href="#technology-1"><span class="octicon octicon-link"></span></a>Technology</h2>
+
+<p>Modern CPU has multiple level caches, and the architecture is similar to an organization.</p>
+
+<p>CPU cache contains multiple stages<br><img src="images/cache.png" alt="CPU cache"></p>
+
+<h1>
+<a name="amdahls-law" class="anchor" href="#amdahls-law"><span class="octicon octicon-link"></span></a>Amdahl's law</h1>
+
+<h2>
+<a name="metaphor-1" class="anchor" href="#metaphor-1"><span class="octicon octicon-link"></span></a>Metaphor</h2>
+
+<p><em>In real world there is all kind of inefficiency, one department may depend on another. That's why management theories exists.</em> </p>
+
+<h2>
+<a name="technology-2" class="anchor" href="#technology-2"><span class="octicon octicon-link"></span></a>Technology</h2>
+
+<p>In a program, how can we optimize process in such a parallel and staged environment? </p>
+
+<p><strong>Amdahl's law</strong></p>
+
+<p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. If %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are. </p>
+
+<p>Amdahl's law<br><img src="images/amdahl.png" alt="Amdahl's law"></p>
+
+<p>To remove inefficiency, just find the bottleneck that can not run in parallel, namely avoid shared resources.</p>
+
+<h1>
+<a name="optimization-batch-message" class="anchor" href="#optimization-batch-message"><span class="octicon octicon-link"></span></a>Optimization: Batch message</h1>
+
+<p>The first bottleneck is main memory access, which is expensive.</p>
+
+<h2>
+<a name="metaphor-2" class="anchor" href="#metaphor-2"><span class="octicon octicon-link"></span></a>Metaphor</h2>
+
+<p><em>Manager collect status of employees, but they do not send to the boss you one by one, instead they wait until all the status are collected, and send to you in a batch.</em></p>
+
+<h2>
+<a name="technology-3" class="anchor" href="#technology-3"><span class="octicon octicon-link"></span></a>Technology</h2>
+
+<p>Similarly, CPU cache is split to cache lines, and batch read data from main memory.  </p>
+
+<p>Disruptor use ring buffer to place objects padding together in memory so as to avoid false sharing and cache miss.</p>
+
+<p>Ring buffer<br><img src="images/ringbuffer.jpg" alt="ringbuffer"></p>
+
+<h1>
+<a name="optimization-lock-free-synchronization" class="anchor" href="#optimization-lock-free-synchronization"><span class="octicon octicon-link"></span></a>Optimization: Lock free synchronization</h1>
+
+<p>Another bottleneck is shared locks.</p>
+
+<h2>
+<a name="metaphor-3" class="anchor" href="#metaphor-3"><span class="octicon octicon-link"></span></a>Metaphor</h2>
+
+<p><em>People manager and product manager both manage employees. They can exchange status of employees directly since their offices are close to each other.</em></p>
+
+<h2>
+<a name="technology-4" class="anchor" href="#technology-4"><span class="octicon octicon-link"></span></a>Technology</h2>
+
+<p>Synchronization for shared resource is expensive. </p>
+
+<ol>
+<li>Lock: involves context switch, which is quite expensive.</li>
+<li>CAS: lock instruction pipeline and complex to program.</li>
+</ol><p>lock penalty<br><img src="images/lockpenalty.png" alt="Lock penalty"></p>
+
+<p>Disruptor use lock free memory barrier to synchronize sequence of ring buffer. Two cores in CPU talk to each other directly via memory barrier to exchange resource state, so as to avoid accessing shared locks.</p>
+
+<p>memory barrier<br><img src="images/memorybarrier.png" alt="Memory barrier"></p>
+
+<h1>
+<a name="reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h1>
+
+<ol>
+<li><a href="http://lmax-exchange.github.io/disruptor/">LMAX disruptor on github</a></li>
+<li><a href="http://disruptor.googlecode.com/files/Disruptor-1.0.pdf">Disruptor Technical Paper</a></li>
+<li><a href="http://mechanical-sympathy.blogspot.com/">Mechanical sympathy</a></li>
+<li><a href="http://www.infoq.com/presentations/LMAX">Disruptor presentation@QCON</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Moore_Law">Moore's law@Wikipedia</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Amdahl's_law">Amdahl's law@Wikipedia</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Circular_buffer">Ring buffer@Wikipedia</a></li>
+<li><a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;ved=0CDAQFjAA&amp;url=http%3A%2F%2Fwww.rdrop.com%2F%7Epaulmck%2Fscalability%2Fpaper%2Fwhymb.2009.04.05a.pdf&amp;ei=cJfUUrS5BM2CogSWy4DIAw&amp;usg=AFQjCNHA6MjCwoLJFe5dQTye_uI9dimTNg&amp;sig2=tU3Q4l6EbVsTMf7fOqH5hA">Memory Barriers: a Hardware View for Software Hackers</a></li>
+</ol>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
