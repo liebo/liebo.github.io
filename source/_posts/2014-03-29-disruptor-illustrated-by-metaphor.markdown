@@ -9,10 +9,10 @@ categories:
 LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. Disruptor is first applied in financial and messaging systems for its high performance.
 
 Disruptor throughput compared to queue    
-![Throughput](images/throughput.png)
+![Throughput](images/disruptor/throughput.png)
 
 Latency compared to queue    
-![Latency](images/latency.png)
+![Latency](images/disruptor/latency.png)
 
 Showing mechanical sympathy to modern CPU designs, disruptor is so fast in a parallel and staged environment. Following explains this in detail. 
 
@@ -27,18 +27,18 @@ The best way to explain technology is by metaphor. As is said:
 _You are the boss of a fast food restaurant, what are you supposed to do to serve more customers? You hire a waitress with fast hands._
 
 Waitress with fast hands    
-![Fasthand](images/fasthand.jpg)
+![Fasthand](images/disruptor/fasthand.jpg)
 
 _However the speed of waitress is limited, so you hire another waitress. Now the two process requests in parallel, and total throughput is doubled._
 
 Hire two waitresses    
-<img src="images/morewaitress.gif" alt="Morewaitress" width="500">
+<img src="images/disruptor/morewaitress.gif" alt="Morewaitress" width="500">
 
 ## Technology
 Parallel programming is just the same. with a high speed CPU, programs can run fast, result in high throughput and low latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs can run in parallel. 
 
 CPU speed is limited, but the core numbers obey Moore's law    
-![Moore's law](images/moore.jpg)
+![Moore's law](images/disruptor/moore.jpg)
 
 # Staged processing
 
@@ -46,13 +46,13 @@ CPU speed is limited, but the core numbers obey Moore's law
 _Your restaurant grows rapidly, so you must extend your business to more cities, even more countries. As the boss you can not manage all of your employee by yourself, instead you hire managers._
 
 an organization is composed of multiple stages    
-![Organization charts](images/organizational_charts.gif)
+![Organization charts](images/disruptor/organizational_charts.gif)
 
 ## Technology
 Modern CPU has multiple level caches, and the architecture is similar to an organization.
 
 CPU cache contains multiple stages    
-![CPU cache](images/cache.png)
+![CPU cache](images/disruptor/cache.png)
 
 # Amdahl's law
 
@@ -67,7 +67,7 @@ In a program, how can we optimize process in such a parallel and staged environm
 The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. If %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are. 
 
 Amdahl's law    
-![Amdahl's law](images/amdahl.png)
+![Amdahl's law](images/disruptor/amdahl.png)
 
 To remove inefficiency, just find the bottleneck that can not run in parallel, namely avoid shared resources.
 
@@ -83,7 +83,7 @@ Similarly, CPU cache is split to cache lines, and batch read data from main memo
 Disruptor use ring buffer to place objects padding together in memory so as to avoid false sharing and cache miss.
 
 Ring buffer    
-![ringbuffer](images/ringbuffer.jpg)
+![ringbuffer](images/disruptor/ringbuffer.jpg)
 
 # Optimization: Lock free synchronization
 Another bottleneck is shared locks.
@@ -98,12 +98,12 @@ Synchronization for shared resource is expensive.
 1. CAS: lock instruction pipeline and complex to program.
 
 lock penalty    
-![Lock penalty](images/lockpenalty.png)
+![Lock penalty](images/disruptor/lockpenalty.png)
 
 Disruptor use lock free memory barrier to synchronize sequence of ring buffer. Two cores in CPU talk to each other directly via memory barrier to exchange resource state, so as to avoid accessing shared locks.
 
 memory barrier    
-![Memory barrier](images/memorybarrier.png)
+![Memory barrier](images/disruptor/memorybarrier.png)
 
 # Reference
 1. [LMAX disruptor on github](http://lmax-exchange.github.io/disruptor/)
