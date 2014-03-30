@@ -2,15 +2,19 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://liebo.github.io/blog/2014/03/29/disruptor-illustrated-by-metaphor/</loc>
-        <lastmod>2014-03-30T18:12:49+08:00</lastmod>
+        <lastmod>2014-03-30T18:15:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://liebo.github.io/blog/archives/</loc>
-        <lastmod>2014-03-30T18:12:49+08:00</lastmod>
+        <lastmod>2014-03-30T18:15:45+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://liebo.github.io/blog/categories/</loc>
+        <lastmod>2014-03-30T18:15:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://liebo.github.io/</loc>
-        <lastmod>2014-03-30T18:12:49+08:00</lastmod>
+        <lastmod>2014-03-30T18:15:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://liebo.github.io/robots.txt</loc>
