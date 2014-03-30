@@ -99,10 +99,10 @@
 <p>LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. Disruptor is first applied in financial and messaging systems for its high performance.</p>
 
 <p>Disruptor throughput compared to queue  <br/>
-<img src="images/throughput.png" alt="Throughput" /></p>
+<img src="images/disruptor/throughput.png" alt="Throughput" /></p>
 
 <p>Latency compared to queue  <br/>
-<img src="images/latency.png" alt="Latency" /></p>
+<img src="images/disruptor/latency.png" alt="Latency" /></p>
 
 <p>Showing mechanical sympathy to modern CPU designs, disruptor is so fast in a parallel and staged environment. Following explains this in detail.</p>
 
@@ -119,19 +119,19 @@ Technology is similar, thought behind is the key.
 <p><em>You are the boss of a fast food restaurant, what are you supposed to do to serve more customers? You hire a waitress with fast hands.</em></p>
 
 <p>Waitress with fast hands  <br/>
-<img src="images/fasthand.jpg" alt="Fasthand" /></p>
+<img src="images/disruptor/fasthand.jpg" alt="Fasthand" /></p>
 
 <p><em>However the speed of waitress is limited, so you hire another waitress. Now the two process requests in parallel, and total throughput is doubled.</em></p>
 
 <p>Hire two waitresses  <br/>
-<img src="images/morewaitress.gif" alt="Morewaitress" width="500"></p>
+<img src="images/disruptor/morewaitress.gif" alt="Morewaitress" width="500"></p>
 
 <h2>Technology</h2>
 
 <p>Parallel programming is just the same. with a high speed CPU, programs can run fast, result in high throughput and low latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs can run in parallel.</p>
 
 <p>CPU speed is limited, but the core numbers obey Moore&rsquo;s law  <br/>
-<img src="images/moore.jpg" alt="Moore's law" /></p>
+<img src="images/disruptor/moore.jpg" alt="Moore's law" /></p>
 
 <h1>Staged processing</h1>
 
@@ -140,14 +140,14 @@ Technology is similar, thought behind is the key.
 <p><em>Your restaurant grows rapidly, so you must extend your business to more cities, even more countries. As the boss you can not manage all of your employee by yourself, instead you hire managers.</em></p>
 
 <p>an organization is composed of multiple stages  <br/>
-<img src="images/organizational_charts.gif" alt="Organization charts" /></p>
+<img src="images/disruptor/organizational_charts.gif" alt="Organization charts" /></p>
 
 <h2>Technology</h2>
 
 <p>Modern CPU has multiple level caches, and the architecture is similar to an organization.</p>
 
 <p>CPU cache contains multiple stages  <br/>
-<img src="images/cache.png" alt="CPU cache" /></p>
+<img src="images/disruptor/cache.png" alt="CPU cache" /></p>
 
 <h1>Amdahl&rsquo;s law</h1>
 
@@ -164,7 +164,7 @@ Technology is similar, thought behind is the key.
 <p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. If %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are.</p>
 
 <p>Amdahl&rsquo;s law  <br/>
-<img src="images/amdahl.png" alt="Amdahl's law" /></p>
+<img src="images/disruptor/amdahl.png" alt="Amdahl's law" /></p>
 
 <p>To remove inefficiency, just find the bottleneck that can not run in parallel, namely avoid shared resources.</p>
 
@@ -183,7 +183,7 @@ Technology is similar, thought behind is the key.
 <p>Disruptor use ring buffer to place objects padding together in memory so as to avoid false sharing and cache miss.</p>
 
 <p>Ring buffer  <br/>
-<img src="images/ringbuffer.jpg" alt="ringbuffer" /></p>
+<img src="images/disruptor/ringbuffer.jpg" alt="ringbuffer" /></p>
 
 <h1>Optimization: Lock free synchronization</h1>
 
@@ -204,12 +204,12 @@ Technology is similar, thought behind is the key.
 
 
 <p>lock penalty  <br/>
-<img src="images/lockpenalty.png" alt="Lock penalty" /></p>
+<img src="images/disruptor/lockpenalty.png" alt="Lock penalty" /></p>
 
 <p>Disruptor use lock free memory barrier to synchronize sequence of ring buffer. Two cores in CPU talk to each other directly via memory barrier to exchange resource state, so as to avoid accessing shared locks.</p>
 
 <p>memory barrier  <br/>
-<img src="images/memorybarrier.png" alt="Memory barrier" /></p>
+<img src="images/disruptor/memorybarrier.png" alt="Memory barrier" /></p>
 
 <h1>Reference</h1>
 
