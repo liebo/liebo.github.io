@@ -4,7 +4,7 @@
   <title><![CDATA[Embrace Change]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-03-30T18:19:05+08:00</updated>
+  <updated>2014-03-31T10:45:06+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[软件开发之道——演绎思维到归纳思维的转换]]></title>
+    <link href="http://liebo.github.io/blog/2014/03/31/ruan-jian-kai-fa-zhi-dao-yan-yi-si-wei-dao-gui-na-si-wei-de-zhuan-huan/"/>
+    <updated>2014-03-31T10:35:37+08:00</updated>
+    <id>http://liebo.github.io/blog/2014/03/31/ruan-jian-kai-fa-zhi-dao-yan-yi-si-wei-dao-gui-na-si-wei-de-zhuan-huan</id>
+    <content type="html"><![CDATA[<p>从面向过程到面向对象是一种思维方式的转变。面向过程是演绎思维，从一般到特殊，是由上而下的解决一个问题；而面向对象是归纳思维，从特殊到一般，是由下而上的描述一个问题</p>
+
+<p>我们可以看到现代软件工程也是逐渐的从演绎向归纳变化：</p>
+
+<ol>
+<li>面向过程是演绎思维，因为其关注的是流程，具体的怎样解决一个问题，表现为函数的逻辑组装。
+面向对象是归纳思维，其关注的是对象建模，先抽象出共性和对象之间的关系。</li>
+<li>同步编程是演绎思维，所谓同步就是一根筋，把问题分解为几个步骤，每一步都依赖于上一步的结果。
+异步编程是归纳思维，整个系统通过异步事件驱动，所以要先抽象出事件模型。</li>
+<li>瀑布模型是演绎思维，计划式的开发，一开始就关注具体的业务，每一步计划都依赖于上一步的计划，从一开始就希望控制整个过程。
+敏捷模型是归纳思维，演进式的开发，要求从一开始归纳出最基本的Task，然后逐渐演化到更具体的业务，其实和面向对象从接口到具现类是一个道理</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Disruptor Illustrated by Metaphor]]></title>
