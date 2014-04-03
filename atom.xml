@@ -4,7 +4,7 @@
   <title><![CDATA[Embrace Change]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-04-03T12:01:24+08:00</updated>
+  <updated>2014-04-03T15:09:51+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -18,7 +18,7 @@
     <link href="http://liebo.github.io/blog/2014/04/02/android-xiang-mu-mo-kuai-hua/"/>
     <updated>2014-04-02T21:02:43+08:00</updated>
     <id>http://liebo.github.io/blog/2014/04/02/android-xiang-mu-mo-kuai-hua</id>
-    <content type="html"><![CDATA[<p>伴随移动设备的智能化，移动应用呈现出爆发式的增长。当应用多了以后，应用框架也就自然而然的提上日程。框架设计的第一步就是模块化，实现公共模块和应用模块，模块之间通过接口通信，然后才可能去更进一步的考虑依赖注入，MVC框架，领域和事件模型。Android在模块化方面继承了Java的特点，允许以jar包的方式组织和发布模块，不同的是Android仅仅支持静态链接，不支持动态载入模块。Java应用在运行时通过ClassPath找到依赖的模块，而Android则必须在编译期将依赖的模块打包进apk。</p>
+    <content type="html"><![CDATA[<p>伴随移动设备的智能化，移动应用呈现出爆发式的增长。当应用多了以后，应用框架也就自然而然的提上日程。框架设计的第一步就是模块化，实现公共模块和应用模块，模块之间通过接口通信，然后才可能去更进一步的考虑依赖注入，MVC框架，领域和事件模型。Android在模块化方面继承了Java的特点，允许以jar包的方式组织和发布模块，不同的是Android必须将jar包打包进apk，不支持从ClassPath动态载入模块。</p>
 
 <p>在Android模块依赖管理有两个经常遇见的问题：</p>
 
