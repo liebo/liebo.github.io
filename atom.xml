@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Embrace Change]]></title>
+  <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-04-03T15:09:51+08:00</updated>
+  <updated>2014-04-03T17:52:58+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[软件开发之道——面向对象设计是方法论]]></title>
+    <link href="http://liebo.github.io/blog/2014/04/03/ruan-jian-kai-fa-zhi-dao-mian-xiang-dui-xiang-she-ji-shi-fang-fa-lun/"/>
+    <updated>2014-04-03T17:27:58+08:00</updated>
+    <id>http://liebo.github.io/blog/2014/04/03/ruan-jian-kai-fa-zhi-dao-mian-xiang-dui-xiang-she-ji-shi-fang-fa-lun</id>
+    <content type="html"><![CDATA[<p>有人吐槽面向对象设计过于复杂，只要Design by Contract，Prefer Composition over Inheritance，Loose Couple就可以了。我要说，这样的认识层次还不够高。这就好比，因为红学家把红楼梦整的特玄乎，而认为红楼梦本身不是好作品。</p>
+
+<p>面向对象分析与设计，是一种方法论，是我们认识世界和改造世界的方法的理论。接口，继承，多态，SOLID等等都只是表象，我们需要做的是透过现象看到本质——那就是，不要从一开始就尝试去具体解决一个问题，或者实现一个需求，而是去描述一个问题，即建模。面向对象设计只是众多建模方式的一种，函数式编程以函数为中心建模，状态机以状态和变迁为中心建模，而面向对象以对象为中心建模则是最符合人们对客观世界的认识的。正如做人一样，有自己的世界观作为准则，做事的时候不必拘泥于具体的某个方法。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android 项目模块化开发]]></title>
