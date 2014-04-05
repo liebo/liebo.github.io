@@ -7,8 +7,7 @@
 	<meta name="author" content="liebo">
 
 	
-	<meta name="description" content="传统的应用在处理错误时 粒度太粗，出现错误时，整个服务终止，然后做失效恢复，自动化一点的比如集群某一节点失效之后的Failover
-粒度太细，出现错误时，在错误出现的位置处理，典型的，比如根据函数返回值做判断。Java中的异常处理虽然可以交给调用堆栈的上级对象方法处理，仍然只能在有限的范围内处理 &hellip;">
+	<meta name="description" content=" 面向对象设计第一步是设计类的继承结构和类的实例依赖组合关系，而最好的表达莫过于UML类图。 考虑一个支持数据双向绑定的GridView的设计，首先设计ViewModel的类继承和对象关系 以及View的类体系结构 最后处理双向绑定关系 Apr 5th, 2014 Comments ">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -75,6 +74,57 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/04/05/shuang-xiang-shu-ju-bang-ding-umllei-tu-she-ji/">
+		
+			双向数据绑定UML类图设计</a>
+	</h2>
+	<div class="entry-content">
+		<p>面向对象设计第一步是设计类的继承结构和类的实例依赖组合关系，而最好的表达莫过于UML类图。</p>
+
+<p>考虑一个支持数据双向绑定的GridView的设计，首先设计ViewModel的类继承和对象关系</p>
+
+<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[ListViewModel]++-0..*%3E[BaseViewModel%7C+bind(BaseView%20view);],%20[BaseViewModel]%5E-%3E[CellViewModel],%20[BaseViewModel]%5E-%3E[ListViewModel]" alt="ViewModel体系" /></p>
+
+<p>以及View的类体系结构</p>
+
+<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseView%7C+bind(BaseViewModel%20vm);]%5E-%3E[CellView],%20[BaseView]%5E-%3E[LineView],%20[BaseView]%5E-%3E[GridView],%20[LineView]++-0..*%3E[CellView],%20[GridView]++-0..*%3E[LineView]" alt="View体系" /></p>
+
+<p>最后处理双向绑定关系</p>
+
+<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseView]1-1[BaseViewModel],%20[GridView]1-1[ListViewModel],%20[LineView]1-1[ListViewModel],%20[CellView]1-1[CellViewModel]" alt="双向绑定" /></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-05T17:08:02+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/04/05/shuang-xiang-shu-ju-bang-ding-umllei-tu-she-ji/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
