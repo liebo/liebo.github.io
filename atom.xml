@@ -4,7 +4,7 @@
   <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-04-05T22:09:20+08:00</updated>
+  <updated>2014-04-06T15:48:32+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -22,15 +22,19 @@
 
 <p>考虑一个支持数据双向绑定的GridView的设计，首先设计ViewModel的类继承和对象关系</p>
 
-<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[ListViewModel]++-0..*%3E[BaseViewModel%7C+bind(BaseView%20view);],%20[BaseViewModel]%5E-%3E[CellViewModel],%20[BaseViewModel]%5E-%3E[ListViewModel]" alt="ViewModel体系" /></p>
+<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseViewModel%7C+bind(BaseView%20view);],%20[BaseViewModel]%5E-%3E[CellViewModel],%20[BaseViewModel]%5E-%3E[ListViewModel]" alt="ViewModel类体系" /></p>
+
+<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[ListViewModel]++-0..*%3E[BaseViewModel]" alt="ViewModel对象关系" /></p>
 
 <p>以及View的类体系结构</p>
 
-<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseView%7C+bind(BaseViewModel%20vm);]%5E-%3E[CellView],%20[BaseView]%5E-%3E[LineView],%20[BaseView]%5E-%3E[GridView],%20[LineView]++-0..*%3E[CellView],%20[GridView]++-0..*%3E[LineView]" alt="View体系" /></p>
+<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseView%7C+bind(BaseViewModel%20vm);],%20[BaseView]%5E-%3E[ListView],%20[BaseView]%5E-%3E[CellView],%20[ListView]%5E-%3E[LineView],%20[ListView]%5E-%3E[GridView]" alt="View继承体系" /></p>
+
+<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/%20[LineView]++-0..*%3E[CellView],%20[GridView]++-0..*%3E[LineView]" alt="View对象结构" /></p>
 
 <p>最后处理双向绑定关系</p>
 
-<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseView]1-1[BaseViewModel],%20[GridView]1-1[ListViewModel],%20[LineView]1-1[ListViewModel],%20[CellView]1-1[CellViewModel]" alt="双向绑定" /></p>
+<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseView]1-1[BaseViewModel],%20[ListView]1-1[ListViewModel],%20[CellView]1-1[CellViewModel]" alt="双向绑定" /></p>
 ]]></content>
   </entry>
   
