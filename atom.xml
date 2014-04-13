@@ -4,7 +4,7 @@
   <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-04-13T15:43:18+08:00</updated>
+  <updated>2014-04-13T15:47:17+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -33,7 +33,7 @@
 </ol>
 
 
-<p>代码可读性差只是表现，深层次的原因还是系统建模方法不对。使用Callback就和面向过程一样，将重心放在了操作本身，只能开到眼前，而不能在一个更高的层次上去纵观整个系统。</p>
+<p>代码可读性差只是表现，深层次的原因还是系统建模方法不对。使用Callback就和面向过程一样，将重心放在了操作本身，只能看到眼前，而不能在一个更高的层次上去纵观整个系统。</p>
 
 <h3>Future和Promise</h3>
 
@@ -50,7 +50,7 @@
 <ol>
 <li>对事件建模</li>
 <li>对事件流程建模</li>
-<li>对事件流的流程建模</li>
+<li>对事件相关性建模</li>
 </ol>
 
 ]]></content>
