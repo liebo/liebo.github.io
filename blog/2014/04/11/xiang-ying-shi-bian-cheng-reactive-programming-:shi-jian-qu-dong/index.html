@@ -1,0 +1,194 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>响应式编程(Reactive Programming)：事件驱动 - The only Unchanged is Change itself</title>
+	<meta name="author" content="liebo">
+
+	
+	<meta name="description" content="CPU多核架构的流行，以及Node.js等全异步软件平台的出现使得异步编程逐渐走上主流舞台，相应的各种异步框架也逐渐出现 回调(Callback) 当我们说到异步的时候，自然而然的就想到Callback，函数调用的结果通过Callback回调返回，在结果返回之前， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="The only Unchanged is Change itself" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">The only Unchanged is Change itself</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:liebo.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:liebo.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">响应式编程(Reactive Programming)：事件驱动</h2>
+	<div class="entry-content"><p>CPU多核架构的流行，以及Node.js等全异步软件平台的出现使得异步编程逐渐走上主流舞台，相应的各种异步框架也逐渐出现</p>
+
+<h3>回调(Callback)</h3>
+
+<p>当我们说到异步的时候，自然而然的就想到Callback，函数调用的结果通过Callback回调返回，在结果返回之前，线程可以继续运行执行其他的操作而不用阻塞。</p>
+
+<p>非常完美，是吗？但是当多个异步操作具有依赖性时，怎么办，这就产生了异步编程中常说的Callback Hell问题，多个Callback嵌套导致代码可读性很差。</p>
+
+<ol>
+<li>代码缩进非常难看。</li>
+<li>回调代码分散在各处，来回跳跃，流程很不清晰。</li>
+<li>状态分散在多个closure中，难于管理。</li>
+</ol>
+
+
+<p>代码可读性差只是表现，深层次的原因还是系统建模方法不对。使用Callback就和面向过程一样，将重心放在了操作本身，只能开到眼前，而不能在一个更高的层次上去纵观整个系统。</p>
+
+<h3>Future和Promise</h3>
+
+<p>Future在Callback的基础上将回调对象化。Future与Callback的区别在于Future引入了完成，未决，错误等标准回调事件，在Future状态改变时以事件的方式通知关注者，这些事件本身就是对象。于是Future将设计者的重点从操作向事件建模方向转变。</p>
+
+<p>事件建模之外，事件在系统中的流动也需要建模，于是就有了Promise，可以将多个事件处理器串联起来，多个依赖的异步操作转化成事件流程的声明，从而一眼就能从代码中看出依赖关系。</p>
+
+<h3>Reactive Extension (RX)</h3>
+
+<p>RX在Future和Promise的基础上更进了一步，将单一的事件处理扩展到多个先后相关的事件流处理。举个例子，鼠标拖拽事件，是由一个MouseDown事件加多个MouseMove事件以及一个MouseUp事件构成，Promise处理这种情况需要处理器具有状态记住拖拽的阶段。RX将MouseDown和MouseUp这些事件的处理标准化，并且将拖拽阶段的这一共享状态从业务处理器中抽离，而固化到事件处理流程中。RX抽象了大量的事件操作，使得我们可以将重心放到事件流程建模中，而不是具体的一个接一个事件的处理。共享状态从处理器中抽离也有利于业务处理器的重用以及并发处理。</p>
+
+<p>综上，响应式编程中的事件驱动，要求</p>
+
+<ol>
+<li>对事件建模</li>
+<li>对事件流程建模</li>
+<li>对事件流的流程建模</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-11T09:35:00+08:00" pubdate data-updated="true">Apr 11<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    liebo
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'liebo';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://liebo.github.io/blog/2014/04/11/xiang-ying-shi-bian-cheng-reactive-programming-%3Ashi-jian-qu-dong/';
+        var disqus_url = 'http://liebo.github.io/blog/2014/04/11/xiang-ying-shi-bian-cheng-reactive-programming-%3Ashi-jian-qu-dong/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
