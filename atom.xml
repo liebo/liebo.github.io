@@ -4,7 +4,7 @@
   <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-06-26T14:34:34+08:00</updated>
+  <updated>2014-06-26T14:43:26+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -36,7 +36,7 @@
 
 <p>金融交易系统，一般分为消息中间件和应用中间件。消息中间件负责消息的路由和转发，而应用中间件则负责消息的流水线处理。传统的金融交易系统一般具有如下的架构</p>
 
-<p><img src="images/finance_platform/traditional.png" title="传统金融交易系统" ></p>
+<p><img src="http://liebo.github.io/images/finance_platform/traditional.png" title="传统金融交易系统" ></p>
 
 <p>该架构会有以下问题：</p>
 
@@ -54,11 +54,11 @@
 
 <p>我们的解决方案是一种分布式的方案。首先，在网络拓扑结构上，系统具有多个服务器节点，节点通过可靠多播(ZeroMQ + OpenPGM)的消息总线发送和接收消息。所有消息可以达到任何节点，由节点本身而不是消息中间件根据消息主题和消息属性选择感兴趣的消息处理。</p>
 
-<p><img src="images/finance_platform/new.png" alt="新金融系统网络拓扑" /></p>
+<p><img src="http://liebo.github.io/images/finance_platform/new.png" alt="新金融系统网络拓扑" /></p>
 
 <p>其次，节点由多个消息处理器组成的消息流水线构成。同理，消息在处理器之间的传递也是分布式的，每一个处理器根据消息主题和消息属性选择感兴趣的消息。</p>
 
-<p><img src="images/finance_platform/pipeline.png" alt="应用容器消息流水线" /></p>
+<p><img src="http://liebo.github.io/images/finance_platform/pipeline.png" alt="应用容器消息流水线" /></p>
 
 <p>相比传统系统，该系统具有以下优势：</p>
 
@@ -110,7 +110,7 @@
 
 <p>系统唯一的中心节点是排队机，因此排队机的性能也就直接决定了系统的性能。以下是对排队机的压力测试结果。</p>
 
-<p><img src="images/finance_platform/performance.png" alt="排队机性能测试结果" /></p>
+<p><img src="http://liebo.github.io/images/finance_platform/performance.png" alt="排队机性能测试结果" /></p>
 
 <p>测试使用的是两核八线程CPU，通过千兆网卡与交换机连接。测试的最高吞吐可达到35万/每秒。分析表明性能瓶颈主要在网络，使用虚拟网络接收测试表明，排队机的吞吐量可达到接近百万/每秒。接下来优化的方向主要有：</p>
 
