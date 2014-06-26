@@ -4,7 +4,7 @@
   <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-04-13T15:47:17+08:00</updated>
+  <updated>2014-06-26T14:34:34+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -12,6 +12,171 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[基于Java的金融应用中间件与消息总线]]></title>
+    <link href="http://liebo.github.io/blog/2014/06/22/ji-yu-javade-jin-rong-jiao-yi-zhong-jian-jian-yu-xiao-xi-zong-xian/"/>
+    <updated>2014-06-22T14:11:55+08:00</updated>
+    <id>http://liebo.github.io/blog/2014/06/22/ji-yu-javade-jin-rong-jiao-yi-zhong-jian-jian-yu-xiao-xi-zong-xian</id>
+    <content type="html"><![CDATA[<h1>概述</h1>
+
+<p>2013年是互联网金融元年。现阶段，互联网在技术上对传统金融系统的冲击主要表现在两方面：</p>
+
+<ul>
+<li>为了支持海量用户，云计算，云存储逐渐替代传统IOE的软件和设备。集中式的架构也向分布式转变，并且允许分布式节点有不一致性的情况。</li>
+<li>交易系统对一致性有较高的要求。多资产交易，高频交易等促进了能够充分利用硬件性能的消息处理框架和消息通信框架的产生和发展。</li>
+</ul>
+
+
+<p>对于云计算在金融系统中的应用已有不少例子，但是对于后一方面，国内相对华尔街等成熟市场来讲相对落后。我们率先在国内研发了一套应用中间件框架和消息总线系统，该系统基于Java开发，并且依托于开源的消息处理框架和消息通信基础设施，支持中间件的敏捷开发和灵活部署。该系统在保证高可用和一致性的前提下，理论上可处理达到百万量级的消息吞吐。</p>
+
+<h1>系统架构</h1>
+
+<h2>传统金融交易系统</h2>
+
+<p>金融交易系统，一般分为消息中间件和应用中间件。消息中间件负责消息的路由和转发，而应用中间件则负责消息的流水线处理。传统的金融交易系统一般具有如下的架构</p>
+
+<p><img src="images/finance_platform/traditional.png" title="传统金融交易系统" ></p>
+
+<p>该架构会有以下问题：</p>
+
+<ol>
+<li>消息中间件（一般采用消息队列实现）是一个中心节点，消息首先发送到消息中间件，消息中间件根据路由配置转发。消息中间件水平扩容难度较大。</li>
+<li>采用集中的数据库存储数据，保证数据一致性。数据库也是一个中心节点，会成为性能瓶颈。</li>
+<li>应用中间件采用线程池处理并发请求。并发将导致不确定性，并且需要引入同步锁机制。</li>
+<li>应用中间件采用冷备份，失效之后备用节点从数据库载入数据，需要较长时间。</li>
+</ol>
+
+
+<h2>我们的解决方案</h2>
+
+<p>传统的高性能系统往往使用C/C++开发，而我们的解决方案使用Java开发，这是因为Java在高性能计算领域已经证明了其可行性，而Java的开发效率和庞大的社区支持是C/C++无法比拟的。</p>
+
+<p>我们的解决方案是一种分布式的方案。首先，在网络拓扑结构上，系统具有多个服务器节点，节点通过可靠多播(ZeroMQ + OpenPGM)的消息总线发送和接收消息。所有消息可以达到任何节点，由节点本身而不是消息中间件根据消息主题和消息属性选择感兴趣的消息处理。</p>
+
+<p><img src="images/finance_platform/new.png" alt="新金融系统网络拓扑" /></p>
+
+<p>其次，节点由多个消息处理器组成的消息流水线构成。同理，消息在处理器之间的传递也是分布式的，每一个处理器根据消息主题和消息属性选择感兴趣的消息。</p>
+
+<p><img src="images/finance_platform/pipeline.png" alt="应用容器消息流水线" /></p>
+
+<p>相比传统系统，该系统具有以下优势：</p>
+
+<ol>
+<li>采用消息总线代替消息中间件，消息接收者可任意添加，水平扩容无压力。</li>
+<li>排队机对消息排序，通过Event Sourcing模式保证一致性。采用WAL（Write Ahead Log）持久化，性能远高于一般数据库。</li>
+<li>应用中间件采用开源的LMAX Disruptor模式实现消息流水线，基于通用硬件即可达到超高性能。开发也更简单：无需并发处理，确定性的编程模型，无需同步锁。</li>
+<li>以上两点也保证了互为备份的多个应用中间件状态完全一致，可以做到双活，零延迟失效切换。</li>
+</ol>
+
+
+<h1>设计原则</h1>
+
+<p>作为一个典型的实时高性能系统，我们采用了响应式（Reactive）模型。根据参考文献中的The Reactive Manifesto，一个响应式的系统的设计应该关注以下几点原则：</p>
+
+<h2>响应事件（Reactive to Events）</h2>
+
+<p>一个响应式系统应该是真正异步的，事件驱动的。</p>
+
+<ul>
+<li>我们的系统是一个真正的异步系统，节点/处理器之间不存在共享可变状态，所有的状态变化都通过消息在节点/处理器之间传递，处理器只处理其职责范围内的计算，没有阻塞的同步操作。</li>
+<li>这个系统中，事件（消息）是一等公民，系统的设计就是抽象事件，事件处理器，设计事件路由表和事件流水线。事件消息通过消息总线在节点之间高速传递，通过消息流水线在处理器间超高速的传递。</li>
+</ul>
+
+
+<h2>响应伸缩（Reactive to Scale）</h2>
+
+<p>为了可伸缩，事件处理器要做到位置透明Location transparency。</p>
+
+<ul>
+<li>在我们系统中，由于事件处理器之间无共享状态，所以事件处理器可以部署到任何一个节点，以及消息流水线的任何位置，要做的只是配置好消息路由。这保证了系统的向上伸缩（Scale up）以及向外伸缩（Scale out）。向外伸缩，只需将新服务器节点接入总线多播组，而向上伸缩，只需增加处理器的数量，并且把消息按序号进行划分。</li>
+</ul>
+
+
+<h2>响应错误恢复(Reactive to Resilience）</h2>
+
+<p>响应式系统应当是鲁棒的，能够自动处理错误的。</p>
+
+<ul>
+<li>在我们系统中，应用中的错误也作为一种事件在节点和处理器之间流动，错误消息也有其自有的主题和消息类型，任何一个节点/处理器在配置路由时可以选择关心的错误消息，从而能够成为一个Supervisor角色。这个系统是否鲁棒，取决于Supervisor是否能够很好的处理错误，而发生错误的处理器不用现场处理。这实际上将应用逻辑与处理失败的逻辑隔离开来，有利于业务逻辑相对干净，而Supervisor角色则专注于治愈错误，防止错误在节点/处理器之间传递和扩散。</li>
+</ul>
+
+
+<h2>响应用户（Reactive to User）</h2>
+
+<p>以上几点决定了系统可以实时响应用户操作，以此为基础可以产生丰富的用户交互模型和友好的用户体验。</p>
+
+<h1>性能</h1>
+
+<p>系统唯一的中心节点是排队机，因此排队机的性能也就直接决定了系统的性能。以下是对排队机的压力测试结果。</p>
+
+<p><img src="images/finance_platform/performance.png" alt="排队机性能测试结果" /></p>
+
+<p>测试使用的是两核八线程CPU，通过千兆网卡与交换机连接。测试的最高吞吐可达到35万/每秒。分析表明性能瓶颈主要在网络，使用虚拟网络接收测试表明，排队机的吞吐量可达到接近百万/每秒。接下来优化的方向主要有：</p>
+
+<ol>
+<li>使用万兆网卡，或者更高速的InfinityBand解决方案</li>
+<li>使用自主研发的更轻量级的可靠多播协议代替OpenPGM</li>
+</ol>
+
+
+<h1>应用</h1>
+
+<p>该系统逐步应用于交易，风控，做市策略系统。以下以策略系统的消息流水线配置为例其阐述系统的应用。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;bus&quot;</span> <span class="na">processor=</span><span class="s">&quot;recv&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;queue&quot;</span> <span class="na">processor=</span><span class="s">&quot;removeDuplication&quot;</span><span class="nt">&gt;&lt;filter</span> <span class="na">reverse=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;&lt;topic&gt;</span>sys<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;monitor&quot;</span> <span class="na">processor=</span><span class="s">&quot;default&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>sys.monitor<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;hsuf&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToHsuf&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>strategy.server<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToStrategy&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>strategy.command<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;translator&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToJson&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>quote<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'><span class="nt">&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;management&quot;</span> <span class="na">env=</span><span class="s">&quot;strategy&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>strategy.command<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">sequential=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;runner&quot;</span> <span class="na">env=</span><span class="s">&quot;strategy&quot;</span><span class="nt">&gt;&lt;filter</span> <span class="na">reverse=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;&lt;topic&gt;</span>sys<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'><span class="nt">&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;hsuf&quot;</span> <span class="na">processor=</span><span class="s">&quot;hsufToByte&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>hsuf<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;strategyToByte&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>conn<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'><span class="nt">&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;bus&quot;</span> <span class="na">processor=</span><span class="s">&quot;send&quot;</span><span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>结论</h1>
+
+<p>基于开源消息处理和通信框架，基于Java平台研发的分布式交易中间件和消息总线系统，在架构上和技术上都是可行的，该系统使用通用硬件即可达到数据一致性，可用性，超高性能，可伸缩和可扩展。</p>
+
+<h1>参考资料</h1>
+
+<ol>
+<li><a href="http://www.reactivemanifesto.org">The Reactive Manifesto</a></li>
+<li><a href="http://disruptor.googlecode.com/files/Disruptor-1.0.pdf">Disruptor Technical Paper</a></li>
+<li><a href="http://mechanical-sympathy.blogspot.com/">Mechanical sympathy</a></li>
+<li><a href="http://zeromq.org">ZeroMQ</a></li>
+<li><a href="http://martinfowler.com/eaaDev/EventSourcing.html">Event sourcing</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[响应式编程(Reactive Programming)：事件驱动]]></title>
