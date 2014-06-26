@@ -199,21 +199,57 @@
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
 </pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;bus&quot;</span> <span class="na">processor=</span><span class="s">&quot;recv&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;queue&quot;</span> <span class="na">processor=</span><span class="s">&quot;removeDuplication&quot;</span><span class="nt">&gt;&lt;filter</span> <span class="na">reverse=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;&lt;topic&gt;</span>sys<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/stage&gt;</span>
-</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;monitor&quot;</span> <span class="na">processor=</span><span class="s">&quot;default&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>sys.monitor<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/stage&gt;</span>
-</span><span class='line'><span class="nt">&lt;stage&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;hsuf&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToHsuf&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>strategy.server<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToStrategy&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>strategy.command<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;translator&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToJson&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>quote<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;queue&quot;</span> <span class="na">processor=</span><span class="s">&quot;removeDuplication&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;filter</span> <span class="na">reverse=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;&lt;topic&gt;</span>sys<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
 </span><span class='line'><span class="nt">&lt;/stage&gt;</span>
-</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;management&quot;</span> <span class="na">env=</span><span class="s">&quot;strategy&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>strategy.command<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;monitor&quot;</span> <span class="na">processor=</span><span class="s">&quot;default&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;filter&gt;&lt;topic&gt;</span>sys.monitor<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
+</span><span class='line'><span class="nt">&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;hsuf&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToHsuf&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;filter&gt;&lt;topic&gt;</span>strategy.server<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/processor&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToStrategy&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;filter&gt;&lt;topic&gt;</span>strategy.command<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/processor&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;translator&quot;</span> <span class="na">processor=</span><span class="s">&quot;byteToJson&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;filter&gt;&lt;topic&gt;</span>quote<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/processor&gt;</span>
+</span><span class='line'><span class="nt">&lt;/stage&gt;</span>
+</span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;management&quot;</span> <span class="na">env=</span><span class="s">&quot;strategy&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;filter&gt;&lt;topic&gt;</span>strategy.command<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
+</span><span class='line'><span class="nt">&lt;/stage&gt;</span>
 </span><span class='line'><span class="nt">&lt;stage</span> <span class="na">sequential=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;runner&quot;</span> <span class="na">env=</span><span class="s">&quot;strategy&quot;</span><span class="nt">&gt;&lt;filter</span> <span class="na">reverse=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;&lt;topic&gt;</span>sys<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;runner&quot;</span> <span class="na">env=</span><span class="s">&quot;strategy&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;filter</span> <span class="na">reverse=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;&lt;topic&gt;</span>sys<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/processor&gt;</span>
 </span><span class='line'><span class="nt">&lt;/stage&gt;</span>
 </span><span class='line'><span class="nt">&lt;stage&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;hsuf&quot;</span> <span class="na">processor=</span><span class="s">&quot;hsufToByte&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>hsuf<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;strategyToByte&quot;</span><span class="nt">&gt;&lt;filter&gt;&lt;topic&gt;</span>conn<span class="nt">&lt;/topic&gt;&lt;/filter&gt;&lt;/processor&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;hsuf&quot;</span> <span class="na">processor=</span><span class="s">&quot;hsufToByte&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;filter&gt;&lt;topic&gt;</span>hsuf<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/processor&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;processor</span> <span class="na">plugin=</span><span class="s">&quot;strategy&quot;</span> <span class="na">processor=</span><span class="s">&quot;strategyToByte&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;filter&gt;&lt;topic&gt;</span>conn<span class="nt">&lt;/topic&gt;&lt;/filter&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/processor&gt;</span>
 </span><span class='line'><span class="nt">&lt;/stage&gt;</span>
 </span><span class='line'><span class="nt">&lt;stage</span> <span class="na">plugin=</span><span class="s">&quot;bus&quot;</span> <span class="na">processor=</span><span class="s">&quot;send&quot;</span><span class="nt">/&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
