@@ -7,8 +7,8 @@
 	<meta name="author" content="liebo">
 
 	
-	<meta name="description" content="敏捷开发鼓励细粒度的更新和提交代码，主要是为了将变化的成本减至最小。如果采用粗粒度更新和提交，有以下问题： 由于长时间未更新代码，等到更新的时候如果发现代码集成有问题，改动的成本会更大。
-其他提交代码的人已经转到新的任务，这时候再回来做集成打断其任务，而且因为是较长时间以前的代码， &hellip;">
+	<meta name="description" content="在表现层和数据层之间为何需要有一层中间抽象层：领域层？何不表现层直接访问数据层简单直接呢？我想目的主要有： 领域建模是对业务的抽象，通过封装，继承，组合，分层等各种分析手段，将领域业务理顺，做合理的划分，从而领域建模本身就是将业务清晰的过程。
+领域建模中抽象出来的概念名词，以及代表方法的动词， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -75,6 +75,53 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/07/22/ling-yu-jian-mo-de-mu-de/">
+		
+			领域建模的目的</a>
+	</h2>
+	<div class="entry-content">
+		<p>在表现层和数据层之间为何需要有一层中间抽象层：领域层？何不表现层直接访问数据层简单直接呢？我想目的主要有：</p>
+
+<ol>
+<li>领域建模是对业务的抽象，通过封装，继承，组合，分层等各种分析手段，将领域业务理顺，做合理的划分，从而领域建模本身就是将业务清晰的过程。</li>
+<li>领域建模中抽象出来的概念名词，以及代表方法的动词，组成词汇表，有利于业务人员与开发人员沟通。</li>
+<li>领域建模采用面向对象的方法，有利于逻辑的重用，和新业务的扩展。通过多态，能够通过简单的派生新的类型，使得原有的逻辑自动应用到新的业务。</li>
+<li>相比于传统的基于用例的分析，领域建模站在系统本身的内在的角度，而不是系统的外在表象，因而能够分析清楚系统的内在本质，这也是领域建模相比用例驱动的开发扩展性和可维护性更强的原因。</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-22T22:03:08+08:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/07/22/ling-yu-jian-mo-de-mu-de/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -744,176 +791,10 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/03/29/disruptor-illustrated-by-metaphor/">
-		
-			Disruptor Illustrated by Metaphor</a>
-	</h2>
-	<div class="entry-content">
-		<h1>What is disruptor</h1>
-
-<p>LMAX disruptor is a high performance alternative to bounded queues for exchanging data between concurrent threads. Disruptor is first applied in financial and messaging systems for its high performance.</p>
-
-<p>Disruptor throughput compared to queue  <br/>
-<img src="/images/disruptor/throughput.png" alt="Throughput" /></p>
-
-<p>Latency compared to queue  <br/>
-<img src="/images/disruptor/latency.png" alt="Latency" /></p>
-
-<p>Showing mechanical sympathy to modern CPU designs, disruptor is so fast in a parallel and staged environment. Following explains this in detail.</p>
-
-<h1>Parallel Programming</h1>
-
-<p>The best way to explain technology is by metaphor. As is said:</p>
-
-<blockquote><p><p>
-Technology is similar, thought behind is the key.
-<p></p></blockquote>
-
-<h2>Metaphor in real world</h2>
-
-<p><em>You are the boss of a fast food restaurant, what are you supposed to do to serve more customers? You hire a waitress with fast hands.</em></p>
-
-<p>Waitress with fast hands  <br/>
-<img src="/images/disruptor/fasthand.jpg" alt="Fasthand" /></p>
-
-<p><em>However the speed of waitress is limited, so you hire another waitress. Now the two process requests in parallel, and total throughput is doubled.</em></p>
-
-<p>Hire two waitresses  <br/>
-<img src="/images/disruptor/morewaitress.gif" alt="Morewaitress" width="500"></p>
-
-<h2>Technology</h2>
-
-<p>Parallel programming is just the same. with a high speed CPU, programs can run fast, result in high throughput and low latency. However CPU speed is limited to several GHZ, so more CPU cores are introduced, and programs can run in parallel.</p>
-
-<p>CPU speed is limited, but the core numbers obey Moore&rsquo;s law  <br/>
-<img src="/images/disruptor/moore.jpg" alt="Moore's law" /></p>
-
-<h1>Staged processing</h1>
-
-<h2>Metaphor</h2>
-
-<p><em>Your restaurant grows rapidly, so you must extend your business to more cities, even more countries. As the boss you can not manage all of your employee by yourself, instead you hire managers.</em></p>
-
-<p>an organization is composed of multiple stages  <br/>
-<img src="/images/disruptor/organizational_charts.gif" alt="Organization charts" /></p>
-
-<h2>Technology</h2>
-
-<p>Modern CPU has multiple level caches, and the architecture is similar to an organization.</p>
-
-<p>CPU cache contains multiple stages  <br/>
-<img src="/images/disruptor/cache.png" alt="CPU cache" /></p>
-
-<h1>Amdahl&rsquo;s law</h1>
-
-<h2>Metaphor</h2>
-
-<p><em>In real world there is all kind of inefficiency, one department may depend on another. That&rsquo;s why management theories exists.</em></p>
-
-<h2>Technology</h2>
-
-<p>In a program, how can we optimize process in such a parallel and staged environment?</p>
-
-<p><strong>Amdahl&rsquo;s law</strong></p>
-
-<p>The speedup of a program using multiple processors in parallel computing is limited by the time needed for the sequential fraction of the program. If %5 of the program cannot compute in parallel, the speedup can only reach 20 times no matter how many processors there are.</p>
-
-<p>Amdahl&rsquo;s law  <br/>
-<img src="/images/disruptor/amdahl.png" alt="Amdahl's law" /></p>
-
-<p>To remove inefficiency, just find the bottleneck that can not run in parallel, namely avoid shared resources.</p>
-
-<h1>Optimization: Batch message</h1>
-
-<p>The first bottleneck is main memory access, which is expensive.</p>
-
-<h2>Metaphor</h2>
-
-<p><em>Manager collect status of employees, but they do not send to the boss you one by one, instead they wait until all the status are collected, and send to you in a batch.</em></p>
-
-<h2>Technology</h2>
-
-<p>Similarly, CPU cache is split to cache lines, and batch read data from main memory.</p>
-
-<p>Disruptor use ring buffer to place objects padding together in memory so as to avoid false sharing and cache miss.</p>
-
-<p>Ring buffer  <br/>
-<img src="/images/disruptor/ringbuffer.jpg" alt="ringbuffer" /></p>
-
-<h1>Optimization: Lock free synchronization</h1>
-
-<p>Another bottleneck is shared locks.</p>
-
-<h2>Metaphor</h2>
-
-<p><em>People manager and product manager both manage employees. They can exchange status of employees directly since their offices are close to each other.</em></p>
-
-<h2>Technology</h2>
-
-<p>Synchronization for shared resource is expensive.</p>
-
-<ol>
-<li>Lock: involves context switch, which is quite expensive.</li>
-<li>CAS: lock instruction pipeline and complex to program.</li>
-</ol>
-
-
-<p>lock penalty  <br/>
-<img src="/images/disruptor/lockpenalty.png" alt="Lock penalty" /></p>
-
-<p>Disruptor use lock free memory barrier to synchronize sequence of ring buffer. Two cores in CPU talk to each other directly via memory barrier to exchange resource state, so as to avoid accessing shared locks.</p>
-
-<p>memory barrier  <br/>
-<img src="/images/disruptor/memorybarrier.png" alt="Memory barrier" /></p>
-
-<h1>Reference</h1>
-
-<ol>
-<li><a href="http://lmax-exchange.github.io/disruptor/">LMAX disruptor on github</a></li>
-<li><a href="http://disruptor.googlecode.com/files/Disruptor-1.0.pdf">Disruptor Technical Paper</a></li>
-<li><a href="http://mechanical-sympathy.blogspot.com/">Mechanical sympathy</a></li>
-<li><a href="http://www.infoq.com/presentations/LMAX">Disruptor presentation@QCON</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Moore_Law">Moore&rsquo;s law@Wikipedia</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Amdahl's_law">Amdahl&rsquo;s law@Wikipedia</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Circular_buffer">Ring buffer@Wikipedia</a></li>
-<li><a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;ved=0CDAQFjAA&amp;url=http%3A%2F%2Fwww.rdrop.com%2F~paulmck%2Fscalability%2Fpaper%2Fwhymb.2009.04.05a.pdf&amp;ei=cJfUUrS5BM2CogSWy4DIAw&amp;usg=AFQjCNHA6MjCwoLJFe5dQTye_uI9dimTNg&amp;sig2=tU3Q4l6EbVsTMf7fOqH5hA">Memory Barriers: a Hardware View for Software Hackers</a></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-29T22:02:36+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/03/29/disruptor-illustrated-by-metaphor/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
+    
+        <a href="/blog/page/2/" class="next">Next</a>
     
     <div class="center"><a href="/blog/archives">Blog Archives</a></div>
 </nav></div>

@@ -4,7 +4,7 @@
   <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-07-21T22:18:32+08:00</updated>
+  <updated>2014-07-22T22:14:33+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[领域建模的目的]]></title>
+    <link href="http://liebo.github.io/blog/2014/07/22/ling-yu-jian-mo-de-mu-de/"/>
+    <updated>2014-07-22T22:03:08+08:00</updated>
+    <id>http://liebo.github.io/blog/2014/07/22/ling-yu-jian-mo-de-mu-de</id>
+    <content type="html"><![CDATA[<p>在表现层和数据层之间为何需要有一层中间抽象层：领域层？何不表现层直接访问数据层简单直接呢？我想目的主要有：</p>
+
+<ol>
+<li>领域建模是对业务的抽象，通过封装，继承，组合，分层等各种分析手段，将领域业务理顺，做合理的划分，从而领域建模本身就是将业务清晰的过程。</li>
+<li>领域建模中抽象出来的概念名词，以及代表方法的动词，组成词汇表，有利于业务人员与开发人员沟通。</li>
+<li>领域建模采用面向对象的方法，有利于逻辑的重用，和新业务的扩展。通过多态，能够通过简单的派生新的类型，使得原有的逻辑自动应用到新的业务。</li>
+<li>相比于传统的基于用例的分析，领域建模站在系统本身的内在的角度，而不是系统的外在表象，因而能够分析清楚系统的内在本质，这也是领域建模相比用例驱动的开发扩展性和可维护性更强的原因。</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[敏捷开发——细粒度提交]]></title>

@@ -1,0 +1,169 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>领域建模的目的 - The only Unchanged is Change itself</title>
+	<meta name="author" content="liebo">
+
+	
+	<meta name="description" content="在表现层和数据层之间为何需要有一层中间抽象层：领域层？何不表现层直接访问数据层简单直接呢？我想目的主要有： 领域建模是对业务的抽象，通过封装，继承，组合，分层等各种分析手段，将领域业务理顺，做合理的划分，从而领域建模本身就是将业务清晰的过程。
+领域建模中抽象出来的概念名词，以及代表方法的动词， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="The only Unchanged is Change itself" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">The only Unchanged is Change itself</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:liebo.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:liebo.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">领域建模的目的</h2>
+	<div class="entry-content"><p>在表现层和数据层之间为何需要有一层中间抽象层：领域层？何不表现层直接访问数据层简单直接呢？我想目的主要有：</p>
+
+<ol>
+<li>领域建模是对业务的抽象，通过封装，继承，组合，分层等各种分析手段，将领域业务理顺，做合理的划分，从而领域建模本身就是将业务清晰的过程。</li>
+<li>领域建模中抽象出来的概念名词，以及代表方法的动词，组成词汇表，有利于业务人员与开发人员沟通。</li>
+<li>领域建模采用面向对象的方法，有利于逻辑的重用，和新业务的扩展。通过多态，能够通过简单的派生新的类型，使得原有的逻辑自动应用到新的业务。</li>
+<li>相比于传统的基于用例的分析，领域建模站在系统本身的内在的角度，而不是系统的外在表象，因而能够分析清楚系统的内在本质，这也是领域建模相比用例驱动的开发扩展性和可维护性更强的原因。</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-22T22:03:08+08:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    liebo
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'liebo';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://liebo.github.io/blog/2014/07/22/ling-yu-jian-mo-de-mu-de/';
+        var disqus_url = 'http://liebo.github.io/blog/2014/07/22/ling-yu-jian-mo-de-mu-de/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
