@@ -4,7 +4,7 @@
   <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-07-22T22:14:33+08:00</updated>
+  <updated>2014-07-23T22:23:56+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈微服务中的分布式概念]]></title>
+    <link href="http://liebo.github.io/blog/2014/07/23/qian-tan-wei-fu-wu-zhong-de-fen-bu-shi-gai-nian/"/>
+    <updated>2014-07-23T21:42:26+08:00</updated>
+    <id>http://liebo.github.io/blog/2014/07/23/qian-tan-wei-fu-wu-zhong-de-fen-bu-shi-gai-nian</id>
+    <content type="html"><![CDATA[<p>微服务（Micro Service）与SOA都强调通过粗粒度的服务而不是细粒度的远程过程调用达到解耦的目的，但是两者也有不同，主要体现在微服务更加强调去中心化和分布式。</p>
+
+<p>SOA倾向于指定一整套的标准涵盖消息传输，路由，转换、中心化的消息编舞（Orchestration）、业务工作流和规则引擎，试图用中心化的一个平台尝试去解决和描述各种类型的业务问题。可以说，SOA是先有平台标准，然后将业务往已有的平台规范上面套。</p>
+
+<p>微服务则反其道而行之，以业务本身为中心，而通信则通过可重用的库，由业务开发时选择合理的。微服务不注重中心化的Orchestration，而比较青睐轻量级的Choreography，通过简单的ZeroMQ或者restful接口通信。</p>
+
+<p>这两种方式应该说是各有千秋吧，开发能力差，业务规则比较规范的企业可以采用SOA，开发能力强，业务规则不好定制的企业则采用微服务。现在微服务比较火应该是拜云计算所赐吧。另一方面互联网的重视用户体验的思维，靠SOA这种比较厚重的框架去实现，也不现实。</p>
+
+<p>不过实际上多数传统企业都是中心化的管理思路，根据Conway‘s Law，一个企业的组织架构往往决定了该企业研发部门，甚至项目的结构，所以这种去中心化的思维仍然是任重而道远啊。不过现实很骨感，在这个信息化的时代，不是被互联网颠覆，就是被淘汰。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[领域建模的目的]]></title>

@@ -1,0 +1,168 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>浅谈微服务中的分布式概念 - The only Unchanged is Change itself</title>
+	<meta name="author" content="liebo">
+
+	
+	<meta name="description" content="微服务（Micro Service）与SOA都强调通过粗粒度的服务而不是细粒度的远程过程调用达到解耦的目的，但是两者也有不同，主要体现在微服务更加强调去中心化和分布式。 SOA倾向于指定一整套的标准涵盖消息传输，路由，转换、中心化的消息编舞（Orchestration）、业务工作流和规则引擎， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="The only Unchanged is Change itself" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">The only Unchanged is Change itself</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:liebo.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:liebo.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">浅谈微服务中的分布式概念</h2>
+	<div class="entry-content"><p>微服务（Micro Service）与SOA都强调通过粗粒度的服务而不是细粒度的远程过程调用达到解耦的目的，但是两者也有不同，主要体现在微服务更加强调去中心化和分布式。</p>
+
+<p>SOA倾向于指定一整套的标准涵盖消息传输，路由，转换、中心化的消息编舞（Orchestration）、业务工作流和规则引擎，试图用中心化的一个平台尝试去解决和描述各种类型的业务问题。可以说，SOA是先有平台标准，然后将业务往已有的平台规范上面套。</p>
+
+<p>微服务则反其道而行之，以业务本身为中心，而通信则通过可重用的库，由业务开发时选择合理的。微服务不注重中心化的Orchestration，而比较青睐轻量级的Choreography，通过简单的ZeroMQ或者restful接口通信。</p>
+
+<p>这两种方式应该说是各有千秋吧，开发能力差，业务规则比较规范的企业可以采用SOA，开发能力强，业务规则不好定制的企业则采用微服务。现在微服务比较火应该是拜云计算所赐吧。另一方面互联网的重视用户体验的思维，靠SOA这种比较厚重的框架去实现，也不现实。</p>
+
+<p>不过实际上多数传统企业都是中心化的管理思路，根据Conway‘s Law，一个企业的组织架构往往决定了该企业研发部门，甚至项目的结构，所以这种去中心化的思维仍然是任重而道远啊。不过现实很骨感，在这个信息化的时代，不是被互联网颠覆，就是被淘汰。</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-23T21:42:26+08:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    liebo
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'liebo';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://liebo.github.io/blog/2014/07/23/qian-tan-wei-fu-wu-zhong-de-fen-bu-shi-gai-nian/';
+        var disqus_url = 'http://liebo.github.io/blog/2014/07/23/qian-tan-wei-fu-wu-zhong-de-fen-bu-shi-gai-nian/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

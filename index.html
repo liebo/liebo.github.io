@@ -7,8 +7,7 @@
 	<meta name="author" content="liebo">
 
 	
-	<meta name="description" content="在表现层和数据层之间为何需要有一层中间抽象层：领域层？何不表现层直接访问数据层简单直接呢？我想目的主要有： 领域建模是对业务的抽象，通过封装，继承，组合，分层等各种分析手段，将领域业务理顺，做合理的划分，从而领域建模本身就是将业务清晰的过程。
-领域建模中抽象出来的概念名词，以及代表方法的动词， &hellip;">
+	<meta name="description" content="微服务（Micro Service）与SOA都强调通过粗粒度的服务而不是细粒度的远程过程调用达到解耦的目的，但是两者也有不同，主要体现在微服务更加强调去中心化和分布式。 SOA倾向于指定一整套的标准涵盖消息传输，路由，转换、中心化的消息编舞（Orchestration）、业务工作流和规则引擎， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -75,6 +74,53 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/07/23/qian-tan-wei-fu-wu-zhong-de-fen-bu-shi-gai-nian/">
+		
+			浅谈微服务中的分布式概念</a>
+	</h2>
+	<div class="entry-content">
+		<p>微服务（Micro Service）与SOA都强调通过粗粒度的服务而不是细粒度的远程过程调用达到解耦的目的，但是两者也有不同，主要体现在微服务更加强调去中心化和分布式。</p>
+
+<p>SOA倾向于指定一整套的标准涵盖消息传输，路由，转换、中心化的消息编舞（Orchestration）、业务工作流和规则引擎，试图用中心化的一个平台尝试去解决和描述各种类型的业务问题。可以说，SOA是先有平台标准，然后将业务往已有的平台规范上面套。</p>
+
+<p>微服务则反其道而行之，以业务本身为中心，而通信则通过可重用的库，由业务开发时选择合理的。微服务不注重中心化的Orchestration，而比较青睐轻量级的Choreography，通过简单的ZeroMQ或者restful接口通信。</p>
+
+<p>这两种方式应该说是各有千秋吧，开发能力差，业务规则比较规范的企业可以采用SOA，开发能力强，业务规则不好定制的企业则采用微服务。现在微服务比较火应该是拜云计算所赐吧。另一方面互联网的重视用户体验的思维，靠SOA这种比较厚重的框架去实现，也不现实。</p>
+
+<p>不过实际上多数传统企业都是中心化的管理思路，根据Conway‘s Law，一个企业的组织架构往往决定了该企业研发部门，甚至项目的结构，所以这种去中心化的思维仍然是任重而道远啊。不过现实很骨感，在这个信息化的时代，不是被互联网颠覆，就是被淘汰。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-23T21:42:26+08:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/07/23/qian-tan-wei-fu-wu-zhong-de-fen-bu-shi-gai-nian/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -736,57 +782,6 @@
 </div>
 	
 	<div class="comments"><a href="/blog/2014/04/02/android-xiang-mu-mo-kuai-hua/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/03/31/ruan-jian-kai-fa-zhi-dao-yan-yi-si-wei-dao-gui-na-si-wei-de-zhuan-huan/">
-		
-			软件开发之道——演绎思维到归纳思维的转换</a>
-	</h2>
-	<div class="entry-content">
-		<p>从面向过程到面向对象是一种思维方式的转变。面向过程是演绎思维，从一般到特殊，是由上而下的解决一个问题；而面向对象是归纳思维，从特殊到一般，是由下而上的描述一个问题</p>
-
-<p>我们可以看到现代软件工程也是逐渐的从演绎向归纳变化：</p>
-
-<ol>
-<li>面向过程是演绎思维，因为其关注的是流程，具体的怎样解决一个问题，表现为函数的逻辑组装。
-面向对象是归纳思维，其关注的是对象建模，先抽象出共性和对象之间的关系。</li>
-<li>同步编程是演绎思维，所谓同步就是一根筋，把问题分解为几个步骤，每一步都依赖于上一步的结果。
-异步编程是归纳思维，整个系统通过异步事件驱动，所以要先抽象出事件模型。</li>
-<li>瀑布模型是演绎思维，计划式的开发，一开始就关注具体的业务，每一步计划都依赖于上一步的计划，从一开始就希望控制整个过程。
-敏捷模型是归纳思维，演进式的开发，要求从一开始归纳出最基本的Task，然后逐渐演化到更具体的业务，其实和面向对象从接口到具现类是一个道理</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-31T10:35:37+08:00" pubdate data-updated="true">Mar 31<span>st</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/03/31/ruan-jian-kai-fa-zhi-dao-yan-yi-si-wei-dao-gui-na-si-wei-de-zhuan-huan/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
