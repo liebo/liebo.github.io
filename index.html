@@ -7,7 +7,7 @@
 	<meta name="author" content="liebo">
 
 	
-	<meta name="description" content="微服务（Micro Service）与SOA都强调通过粗粒度的服务而不是细粒度的远程过程调用达到解耦的目的，但是两者也有不同，主要体现在微服务更加强调去中心化和分布式。 SOA倾向于指定一整套的标准涵盖消息传输，路由，转换、中心化的消息编舞（Orchestration）、业务工作流和规则引擎， &hellip;">
+	<meta name="description" content="概述 数据的可靠传输是任何通信基础设施必须要考虑的问题。由于数据通过网络传播要经过多种设备和中间件，所以有可能会乱序，或者丢失部分数据。一般做法是发送端将消息排序后发送，接收端按照顺序接收消息。如果发生乱序，接收端负责组装，如果发生消息丢失，发送端重发数据。 发送端不可以任意的往网络上发送数据， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -74,6 +74,104 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/08/02/ke-kao-chuan-shu-ack-vs-nak/">
+		
+			基于多播的消息总线——可靠传输</a>
+	</h2>
+	<div class="entry-content">
+		<h1>概述</h1>
+
+<p>数据的可靠传输是任何通信基础设施必须要考虑的问题。由于数据通过网络传播要经过多种设备和中间件，所以有可能会乱序，或者丢失部分数据。一般做法是发送端将消息排序后发送，接收端按照顺序接收消息。如果发生乱序，接收端负责组装，如果发生消息丢失，发送端重发数据。</p>
+
+<p>发送端不可以任意的往网络上发送数据，必须考虑网络的带宽，以及接收端的消费能力。为了维持发送端和接收端之间的稳定连接，接收端需要发送确认消息给发送端，有两种确认消息的方式，ACK和NAK（Negative ACK），TCP采用的是ACK，而多播则采用NAK。</p>
+
+<h1>基于ACK的可靠传输</h1>
+
+<p>我们先以TCP为实例看一下基于ACK的可靠传输机制，下图是图例</p>
+
+<p><img src="/images/reliable/test.png" alt="图例" /></p>
+
+<p>初始状态，TCP的发送窗口大小为8，下图表示序号为0，1，2的数据已成功发送并得到接收端的确认，这些数据不用重新发送，可以从缓存中删除。而序号3，4已经发送，但还未收到确认，仍然留在缓存中。序号5至10可以发送，应用还未发送（即滑动窗口）。序号11以上超出发送窗口（3-10）的范围，不可发送。</p>
+
+<p><img src="/images/reliable/ACK1.png" alt="初始状态" /></p>
+
+<p>如果超过一定时间仍然没有收到3和4的确认，那么滑动窗口向左回退，于是应用重传3，4序号的数据，这便是回退n协议。回退N协议规定即使接收端收到了序列为4的数据，如果没有收到3，则只能将确认序号设为2。</p>
+
+<p><img src="/images/reliable/ACK2.png" alt="回退N" /></p>
+
+<p>更高效的做法，接收端收到4立刻，确认4，而发送端在重传时只需重传序号3，这便是选择重传协议（又叫SACK）</p>
+
+<p><img src="/images/reliable/ACK3.png" alt="选择重传" /></p>
+
+<p>当发送端收到序号为3的确认之后，窗口向又滑动，序号3可以从缓存中删除，序号11可以发送。</p>
+
+<p><img src="/images/reliable/ACK4.png" alt="右滑动" /></p>
+
+<p>TCP之所以采用ACK的方式确认，主要目的是为了拥塞控制，因为Internet跨度大，网络传输各种因素影响较大，等到接收端的ACK之后再发送后续的数据，可以保证发送端不至于发送太多的数据占满带宽或者超出接收端的处理能力。TCP的慢启动和拥塞控制算法也都是基于ACK的，这样做是为了维护一个稳定可靠的互联网，否则很有可能有限的出口带宽被少数几台机器撑满。但是在高速网络上，TCP不够高效的问题就显露出来：</p>
+
+<ol>
+<li>高速网络上，丢包概率小，太多的ACK反而造成负担，而且发送端要等待ACK回来才能继续发送，会导致一定的时延。</li>
+<li>更主要的问题，多播的情况，一个滑动窗口满足不了多个接收端可靠传输的需要。</li>
+</ol>
+
+
+<h1>基于NAK的可靠传输协议</h1>
+
+<p>多播的解决方案是采用更激进的NAK协议，以下也以一个实际的例子解释：</p>
+
+<p>如下图所示，序号0-4是已经发送的数据，而5以后都是可发送数据，窗口没有右边界，发送过的数据也会保留较长时间（甚至落地存储,即Event Sourcing）</p>
+
+<p><img src="/images/reliable/NACK1.png" alt="NACK1" /></p>
+
+<p>如果发生丢包，接收端会在超时之后向发送端发送一条序号为3的NAK消息，于是序号3，4重新打开，发送端重发3，4以及以后的数据，这里还是回退N协议。</p>
+
+<p><img src="/images/reliable/NACK2.png" alt="NACK2" /></p>
+
+<p>如果有多个接收端同时发送了多条NAK消息，那么有几种处理方式：</p>
+
+<ol>
+<li>取最小序号的NAK消息，这还是回退N协议</li>
+<li>为每一个发送NAK消息的接收端建立一条单独的窗口，这就是分组回退协议</li>
+<li>接收端的NAK消息指定哪些消息没收到，而不仅仅是一个序号，这样每一个窗口可以做有选择的重传，此即分组选择重传协议</li>
+</ol>
+
+
+<p>NAK协议更加激进的发送数据，只要没有收到NAK就可以发送数据，因而吞吐和时延比ACK协议会好，在高速网络上，NAK一般会比较少，所以不用担心分组回退会引起吞吐下降。即使最坏的情况，由于采用了多播，也不会比TCP多条连接的情况差。</p>
+
+<p>在出现网络波动的情况下，或者有个别慢接收端的情况下，TCP拥有慢启动和拥塞控制算法，仍然可以保证可靠传输不丢数据。NAK协议也需要有一套相应的拥塞控制和启动算法（未完待续）。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-02T10:20:57+08:00" pubdate data-updated="true">Aug 2<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/08/02/ke-kao-chuan-shu-ack-vs-nak/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -733,55 +831,6 @@
 </div>
 	
 	<div class="comments"><a href="/blog/2014/04/03/ruan-jian-kai-fa-zhi-dao-mian-xiang-dui-xiang-she-ji-shi-fang-fa-lun/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/04/02/android-xiang-mu-mo-kuai-hua/">
-		
-			Android 项目模块化开发</a>
-	</h2>
-	<div class="entry-content">
-		<p>伴随移动设备的智能化，移动应用呈现出爆发式的增长。当应用多了以后，应用框架也就自然而然的提上日程。框架设计的第一步就是模块化，实现公共模块和应用模块，模块之间通过接口通信，然后才可能去更进一步的考虑依赖注入，MVC框架，领域和事件模型。Android在模块化方面继承了Java的特点，允许以jar包的方式组织和发布模块，不同的是Android必须将jar包打包进apk，不支持从ClassPath动态载入模块。</p>
-
-<p>在Android模块依赖管理有两个经常遇见的问题：</p>
-
-<ol>
-<li>为了将依赖的jar打包进apk，不仅仅要将jar加入依赖列表，还需要指定jar是Exportable的。在Eclipse下，要将jar的路径加入Build Path，还需要将其加入Export Path。用maven来进行模块构建以及依赖管理时，要将依赖的项目加入dependencies列表，并且注意scope不能指定为provided。如果打包好的apk在运行时报错，可以分析一下logcat的输出，如果发现NoClassDefFound之类的错误，则说明有一些依赖的包没有Export（另一个引起这个错误的原因是代码混淆没有配置好，这个以后再讨论）。有时候子类的定义没有找到的话，也会报父类找不到，所以需要仔细的看日志，找到根源的类。有时候Eclipse编译出来的apk可用，maven编译的不可用，这个时候可以考虑解压缩apk和反编译dex，找到maven编译的apk缺少的包和类。</li>
-<li>有一些依赖的jar包只是编译期需要，而在运行时是不需要的，比如javax开头的包，在Eclipse下，不需要Export，而maven则需要指定其scope为provided。</li>
-</ol>
-
-
-<p>最后，再强调一下，仔细的分析log，不能忽视任何警告和错误信息。</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-02T21:02:43+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/04/02/android-xiang-mu-mo-kuai-hua/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
