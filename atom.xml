@@ -4,7 +4,7 @@
   <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-08-02T12:04:46+08:00</updated>
+  <updated>2014-08-17T16:35:26+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[交易中间件——为何不使用Akka]]></title>
+    <link href="http://liebo.github.io/blog/2014/08/17/jiao-yi-zong-xian-wei-he-bu-shi-yong-akka/"/>
+    <updated>2014-08-17T15:48:28+08:00</updated>
+    <id>http://liebo.github.io/blog/2014/08/17/jiao-yi-zong-xian-wei-he-bu-shi-yong-akka</id>
+    <content type="html"><![CDATA[<p>我们的交易中间件所采用的容器技术与Akka的Actor模式有很大的相似性：</p>
+
+<ul>
+<li>Actor之间不共享数据，仅仅通过Immutable的消息通信，这点与我们的基于Disruptor的消息流水线是一致的。</li>
+<li>Actor支持通过ZeroMQ和PGM作Pub/Sub</li>
+<li>Actor甚至支持Persistence，Actor之间的通信支持Event Sourcing</li>
+</ul>
+
+
+<p>既然Actor如此强大，为什么我们不用其作为我们的通信基础设施和应用容器呢？主要原因是两点：</p>
+
+<h3>一. 性能</h3>
+
+<ul>
+<li>为了达到超高的性能，基于队列的通信满足不了我们的要求，我们需要采用多播的消息总线和Disruptor作为通信手段，这类技术的一个特点是发送者和消费者之间是无耦合的，发送者只需要发送，无需了解有多少个消费者。而Akka的Actor从一开始就构成了一颗树，由父节点管理子节点，这实际上在父子节点间引入耦合，代价就是消息的传递存在额外的负担。</li>
+<li>我们的设计要求使用不产生GC的内存管理方法，使用RingBuffer技术很简单就可以做到。而Akka在这一点上是不满足要求的。</li>
+<li>我们的架构是非常简单的，Akka的特性远远超出了我们的需求，使用Akka当然可以完成我们的功能，但是如果需要调优的话，很可能需要对Akka进行扩展，Akka这么多特性的实现反而会成为负担。</li>
+</ul>
+
+
+<h3>二. 易维护</h3>
+
+<p>Akka的Actor之间的通信是很自由的，Actor也支持动态创建，销毁，生命周期管理，甚至支持软件事务内存，这中间的逻辑实际上可以很复杂。而我们的技术从一开始就着眼于Event Sourcing + 消息流水线 这种简单的通信方式，无需这么多动态特性，无需事务。可以说我们的交互是基于服务的粗粒度的，监控和管理也是基于服务的，因而在实现上可以非常简单，简单的好处是行为可预期，出了问题也很好分析和解决，这对于金融服务来说尤其重要。</p>
+
+<p>Akka的Actor的适用范围比我们的框架要宽广的多，这也恰恰是我们不使用Akka的原因。Akka提供的这么多灵活的特性是其最大的特点，但是对于我们这样的简单架构来说，反而会成为负担。举一个例子吧：</p>
+
+<p>Actor的Persistence实现采用LevelDB，而我们的Event Souring实现仅仅需要通过WAL做到顺序读写就可以了，LevelDB和WAL这两个从性能上和可维护性上比较显然后者要好的多。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[基于多播的消息总线——可靠传输]]></title>
