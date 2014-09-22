@@ -4,7 +4,7 @@
   <title><![CDATA[The only Unchanged is Change itself]]></title>
   <link href="http://liebo.github.io/atom.xml" rel="self"/>
   <link href="http://liebo.github.io/"/>
-  <updated>2014-08-17T16:35:26+08:00</updated>
+  <updated>2014-09-22T14:19:10+08:00</updated>
   <id>http://liebo.github.io/</id>
   <author>
     <name><![CDATA[liebo]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[并发模式之比较]]></title>
+    <link href="http://liebo.github.io/blog/2014/09/22/bing-fa-mo-shi-zhi-bi-jiao/"/>
+    <updated>2014-09-22T13:27:22+08:00</updated>
+    <id>http://liebo.github.io/blog/2014/09/22/bing-fa-mo-shi-zhi-bi-jiao</id>
+    <content type="html"><![CDATA[<p>前文比较过我们的应用框架和Actor模式，不过感觉仍然不够充分，所以这段时间跟进了一些常见的并发模式，发现了一些本质上的区别。</p>
+
+<p>讲到并发计算我们常常会讲到Scala的Actor，Go的goroutine，以及erlang的process，goroutine遵循CSP（Communication Sequence Process），而Actor多少也受CSP的启发，而且这三者从外面看会有很多相似的地方，但是实际上细究起来还是有所区别的：</p>
+
+<ol>
+<li>Actor之间的通信是异步的，就是说一个Actor将消息扔到另一个Actor的Mailbox以后就不用管了，不用等待另一个Actor处理完。</li>
+<li>goroutine是同步的，一个goroutine将消息扔给另一个goroutine处理，并且阻塞等待另一个goroutine处理完，才能继续。只不过，go实现了一套调度机制，可以使得goroutine可以重入而不是真正的阻塞操作系统的线程。</li>
+<li>erlang的process也是异步的，不过由于erlang是一种函数式编程语言，所以不存在状态共享，是严格的无副作用。Scala则有一些把函数式编程与命令式编程糅合在一起的味道。</li>
+</ol>
+
+
+<p>goroutine的同步特性使得用命令式编程写起来非常简单，这也是go受热捧的原因。但是同步的通信毕竟不是一个可以很好的scale的方案，所以go在多核，分布式计算上扩展起来比较困难，相反Actor和erlang的process则轻易的做到location transparency，比如Actor可以运行在集群中的任何一个节点。</p>
+
+<p>我们的应用框架是异步的，这一点和Actor接近，可以做到location transparency，不过有一点与以上三者都不同：</p>
+
+<ol>
+<li>我们的应用框架中，消息发送者与消费者不产生耦合，发送者只需要发出消息，由消费者去选择感兴趣的消息处理，是一种总线结构。</li>
+<li>erlang和Actor中消息发送者需要知道接收者的ID，才能发送消息，是一种点对点结构。Actor也可以通过Channel解耦发送者和接收者，但是本质上每一个Actor仍然需要维护自己的一个入口消息队列。</li>
+<li>goroutine使用匿名管道解偶了消息发送者和接收者，但这只是在编译器解耦，也就是不用开发者显示指定接收者ID，运行期一样产生耦合，因为毕竟是同步调用，还是点对点结构。</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[交易中间件——为何不使用Akka]]></title>

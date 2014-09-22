@@ -7,9 +7,7 @@
 	<meta name="author" content="liebo">
 
 	
-	<meta name="description" content="我们的交易中间件所采用的容器技术与Akka的Actor模式有很大的相似性： Actor之间不共享数据，仅仅通过Immutable的消息通信，这点与我们的基于Disruptor的消息流水线是一致的。
-Actor支持通过ZeroMQ和PGM作Pub/Sub
-Actor甚至支持Persistence， &hellip;">
+	<meta name="description" content="前文比较过我们的应用框架和Actor模式，不过感觉仍然不够充分，所以这段时间跟进了一些常见的并发模式，发现了一些本质上的区别。 讲到并发计算我们常常会讲到Scala的Actor，Go的goroutine，以及erlang的process，goroutine遵循CSP（Communication &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -76,6 +74,65 @@ Actor甚至支持Persistence， &hellip;">
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/09/22/bing-fa-mo-shi-zhi-bi-jiao/">
+		
+			并发模式之比较</a>
+	</h2>
+	<div class="entry-content">
+		<p>前文比较过我们的应用框架和Actor模式，不过感觉仍然不够充分，所以这段时间跟进了一些常见的并发模式，发现了一些本质上的区别。</p>
+
+<p>讲到并发计算我们常常会讲到Scala的Actor，Go的goroutine，以及erlang的process，goroutine遵循CSP（Communication Sequence Process），而Actor多少也受CSP的启发，而且这三者从外面看会有很多相似的地方，但是实际上细究起来还是有所区别的：</p>
+
+<ol>
+<li>Actor之间的通信是异步的，就是说一个Actor将消息扔到另一个Actor的Mailbox以后就不用管了，不用等待另一个Actor处理完。</li>
+<li>goroutine是同步的，一个goroutine将消息扔给另一个goroutine处理，并且阻塞等待另一个goroutine处理完，才能继续。只不过，go实现了一套调度机制，可以使得goroutine可以重入而不是真正的阻塞操作系统的线程。</li>
+<li>erlang的process也是异步的，不过由于erlang是一种函数式编程语言，所以不存在状态共享，是严格的无副作用。Scala则有一些把函数式编程与命令式编程糅合在一起的味道。</li>
+</ol>
+
+
+<p>goroutine的同步特性使得用命令式编程写起来非常简单，这也是go受热捧的原因。但是同步的通信毕竟不是一个可以很好的scale的方案，所以go在多核，分布式计算上扩展起来比较困难，相反Actor和erlang的process则轻易的做到location transparency，比如Actor可以运行在集群中的任何一个节点。</p>
+
+<p>我们的应用框架是异步的，这一点和Actor接近，可以做到location transparency，不过有一点与以上三者都不同：</p>
+
+<ol>
+<li>我们的应用框架中，消息发送者与消费者不产生耦合，发送者只需要发出消息，由消费者去选择感兴趣的消息处理，是一种总线结构。</li>
+<li>erlang和Actor中消息发送者需要知道接收者的ID，才能发送消息，是一种点对点结构。Actor也可以通过Channel解耦发送者和接收者，但是本质上每一个Actor仍然需要维护自己的一个入口消息队列。</li>
+<li>goroutine使用匿名管道解偶了消息发送者和接收者，但这只是在编译器解耦，也就是不用开发者显示指定接收者ID，运行期一样产生耦合，因为毕竟是同步调用，还是点对点结构。</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-22T13:27:22+08:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/09/22/bing-fa-mo-shi-zhi-bi-jiao/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -810,53 +867,6 @@ Actor甚至支持Persistence， &hellip;">
 </div>
 	
 	<div class="comments"><a href="/blog/2014/04/05/shuang-xiang-shu-ju-bang-ding-umllei-tu-she-ji/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/04/04/xiang-ying-shi-bian-cheng-reactive-programming-%3Ashi-xiao-hui-fu-resilience/">
-		
-			响应式编程(Reactive Programming)：自动恢复的能力(Resilience)</a>
-	</h2>
-	<div class="entry-content">
-		<p>传统的应用在处理错误时</p>
-
-<ul>
-<li>粒度太粗，出现错误时，整个服务终止，然后做失效恢复，自动化一点的比如集群某一节点失效之后的Failover</li>
-<li>粒度太细，出现错误时，在错误出现的位置处理，典型的，比如根据函数返回值做判断。Java中的异常处理虽然可以交给调用堆栈的上级对象方法处理，仍然只能在有限的范围内处理，不能异步处理，而且将正常的应用逻辑和错误处理混在一起。</li>
-</ul>
-
-
-<p>响应式编程要求应用快速响应错误，并快速的自动恢复，不影响业务逻辑的正常运作。这要求将错误也作为一种事件抛出，交给Supervisor角色去异步处理，而正常的业务逻辑与Supervisor是分开的，不会受到影响。把错误作为一等国民对待，对错误建模，在应用设计过程中一开始就考虑错误处理。</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-04T15:35:19+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/04/04/xiang-ying-shi-bian-cheng-reactive-programming-%3Ashi-xiao-hui-fu-resilience/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

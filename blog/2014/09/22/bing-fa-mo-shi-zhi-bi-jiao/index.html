@@ -1,0 +1,180 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>并发模式之比较 - The only Unchanged is Change itself</title>
+	<meta name="author" content="liebo">
+
+	
+	<meta name="description" content="前文比较过我们的应用框架和Actor模式，不过感觉仍然不够充分，所以这段时间跟进了一些常见的并发模式，发现了一些本质上的区别。 讲到并发计算我们常常会讲到Scala的Actor，Go的goroutine，以及erlang的process，goroutine遵循CSP（Communication &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="The only Unchanged is Change itself" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">The only Unchanged is Change itself</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:liebo.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:liebo.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">并发模式之比较</h2>
+	<div class="entry-content"><p>前文比较过我们的应用框架和Actor模式，不过感觉仍然不够充分，所以这段时间跟进了一些常见的并发模式，发现了一些本质上的区别。</p>
+
+<p>讲到并发计算我们常常会讲到Scala的Actor，Go的goroutine，以及erlang的process，goroutine遵循CSP（Communication Sequence Process），而Actor多少也受CSP的启发，而且这三者从外面看会有很多相似的地方，但是实际上细究起来还是有所区别的：</p>
+
+<ol>
+<li>Actor之间的通信是异步的，就是说一个Actor将消息扔到另一个Actor的Mailbox以后就不用管了，不用等待另一个Actor处理完。</li>
+<li>goroutine是同步的，一个goroutine将消息扔给另一个goroutine处理，并且阻塞等待另一个goroutine处理完，才能继续。只不过，go实现了一套调度机制，可以使得goroutine可以重入而不是真正的阻塞操作系统的线程。</li>
+<li>erlang的process也是异步的，不过由于erlang是一种函数式编程语言，所以不存在状态共享，是严格的无副作用。Scala则有一些把函数式编程与命令式编程糅合在一起的味道。</li>
+</ol>
+
+
+<p>goroutine的同步特性使得用命令式编程写起来非常简单，这也是go受热捧的原因。但是同步的通信毕竟不是一个可以很好的scale的方案，所以go在多核，分布式计算上扩展起来比较困难，相反Actor和erlang的process则轻易的做到location transparency，比如Actor可以运行在集群中的任何一个节点。</p>
+
+<p>我们的应用框架是异步的，这一点和Actor接近，可以做到location transparency，不过有一点与以上三者都不同：</p>
+
+<ol>
+<li>我们的应用框架中，消息发送者与消费者不产生耦合，发送者只需要发出消息，由消费者去选择感兴趣的消息处理，是一种总线结构。</li>
+<li>erlang和Actor中消息发送者需要知道接收者的ID，才能发送消息，是一种点对点结构。Actor也可以通过Channel解耦发送者和接收者，但是本质上每一个Actor仍然需要维护自己的一个入口消息队列。</li>
+<li>goroutine使用匿名管道解偶了消息发送者和接收者，但这只是在编译器解耦，也就是不用开发者显示指定接收者ID，运行期一样产生耦合，因为毕竟是同步调用，还是点对点结构。</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-22T13:27:22+08:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    liebo
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'liebo';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://liebo.github.io/blog/2014/09/22/bing-fa-mo-shi-zhi-bi-jiao/';
+        var disqus_url = 'http://liebo.github.io/blog/2014/09/22/bing-fa-mo-shi-zhi-bi-jiao/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
