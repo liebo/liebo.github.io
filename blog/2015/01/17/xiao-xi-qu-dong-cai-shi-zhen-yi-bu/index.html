@@ -3,11 +3,12 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Android 项目模块化开发 - The only Unchanged is Change itself</title>
+	<title>同步并发与异步并行 - The only Unchanged is Change itself</title>
 	<meta name="author" content="liebo">
 
 	
-	<meta name="description" content="伴随移动设备的智能化，移动应用呈现出爆发式的增长。当应用多了以后，应用框架也就自然而然的提上日程。框架设计的第一步就是模块化，实现公共模块和应用模块，模块之间通过接口通信，然后才可能去更进一步的考虑依赖注入，MVC框架，领域和事件模型。Android在模块化方面继承了Java的特点， &hellip;">
+	<meta name="description" content="最近几天由于市场的疯狂，系统中各种隐藏的问题开始爆发，这些问题或多或少都与同步并发有关。 同步并发系统有两大痼疾
+1. 线程池和连接池是典型同步并发：每收到一个请求，从池中取出一个线程处理业务逻辑，直到业务完成才归还线程。为了提高并发量，线程池中的线程数增加，但是线程数增加，首先占用资源大， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -74,18 +75,18 @@
 		
 	
 	<div id="content" class="inner"><article class="post">
-	<h2 class="title">Android 项目模块化开发</h2>
-	<div class="entry-content"><p>伴随移动设备的智能化，移动应用呈现出爆发式的增长。当应用多了以后，应用框架也就自然而然的提上日程。框架设计的第一步就是模块化，实现公共模块和应用模块，模块之间通过接口通信，然后才可能去更进一步的考虑依赖注入，MVC框架，领域和事件模型。Android在模块化方面继承了Java的特点，允许以jar包的方式组织和发布模块，不同的是Android必须将jar包打包进apk，不支持从ClassPath动态载入模块。</p>
+	<h2 class="title">同步并发与异步并行</h2>
+	<div class="entry-content"><p>最近几天由于市场的疯狂，系统中各种隐藏的问题开始爆发，这些问题或多或少都与同步并发有关。</p>
 
-<p>在Android模块依赖管理有两个经常遇见的问题：</p>
+<p>同步并发系统有两大痼疾
+1. 线程池和连接池是典型同步并发：每收到一个请求，从池中取出一个线程处理业务逻辑，直到业务完成才归还线程。为了提高并发量，线程池中的线程数增加，但是线程数增加，首先占用资源大，其次业务处理过程中需要用同步锁保护数据，同步锁访问导致线程上下文切换，成为并发量的瓶颈。这个瓶颈的存在，由于系统访问量的突发高峰，系统的容量的问题便爆发了。
+1. 更严重的问题是，由于关键数据没有同步引起的并发逻辑问题。当今的系统，几乎都是分布式的，要想在多线程，多进程甚至多服务器并发节点间保证数据同步何其艰难，任何一个数据操作发生竞争，都将导致系统逻辑上出现错误，这种错误如果涉及到交易和账户将导致无法挽回的灾难。</p>
 
-<ol>
-<li>为了将依赖的jar打包进apk，不仅仅要将jar加入依赖列表，还需要指定jar是Exportable的。在Eclipse下，要将jar的路径加入Build Path，还需要将其加入Export Path。用maven来进行模块构建以及依赖管理时，要将依赖的项目加入dependencies列表，并且注意scope不能指定为provided。如果打包好的apk在运行时报错，可以分析一下logcat的输出，如果发现NoClassDefFound之类的错误，则说明有一些依赖的包没有Export（另一个引起这个错误的原因是代码混淆没有配置好，这个以后再讨论）。有时候子类的定义没有找到的话，也会报父类找不到，所以需要仔细的看日志，找到根源的类。有时候Eclipse编译出来的apk可用，maven编译的不可用，这个时候可以考虑解压缩apk和反编译dex，找到maven编译的apk缺少的包和类。</li>
-<li>有一些依赖的jar包只是编译期需要，而在运行时是不需要的，比如javax开头的包，在Eclipse下，不需要Export，而maven则需要指定其scope为provided。</li>
-</ol>
+<p>以上两个问题，在市场疯狂的时候同时爆发，这——不仅仅是巧合。解决的方案唯有异步并行。</p>
 
+<p>异步并行的系统，使用自解释的消息承载数据，每一个节点的业务只需要根据消息内容即可处理，无需再访问共享数据。于是多线程，多进程，多服务器节点间无需同步，各自并行处理。</p>
 
-<p>最后，再强调一下，仔细的分析log，不能忽视任何警告和错误信息。</p>
+<p>回调不是真正的异步。回调需要在现场保存状态，既然存在状态就可能由于竞争而导致不一致。只有消息驱动的系统才是真正的异步。</p>
 </div>
 
 
@@ -102,7 +103,7 @@
   
 
 
-<time datetime="2014-04-02T21:02:43+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2014</time></div>
+<time datetime="2015-01-17T13:49:52+08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2015</time></div>
 	<div class="tags">
 
 </div>
@@ -151,8 +152,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://liebo.github.io/blog/2014/04/02/android-xiang-mu-mo-kuai-hua/';
-        var disqus_url = 'http://liebo.github.io/blog/2014/04/02/android-xiang-mu-mo-kuai-hua/';
+        var disqus_identifier = 'http://liebo.github.io/blog/2015/01/17/xiao-xi-qu-dong-cai-shi-zhen-yi-bu/';
+        var disqus_url = 'http://liebo.github.io/blog/2015/01/17/xiao-xi-qu-dong-cai-shi-zhen-yi-bu/';
         var disqus_script = 'embed.js';
       
     (function () {

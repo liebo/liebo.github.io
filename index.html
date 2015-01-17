@@ -7,7 +7,8 @@
 	<meta name="author" content="liebo">
 
 	
-	<meta name="description" content="前文比较过我们的应用框架和Actor模式，不过感觉仍然不够充分，所以这段时间跟进了一些常见的并发模式，发现了一些本质上的区别。 讲到并发计算我们常常会讲到Scala的Actor，Go的goroutine，以及erlang的process，goroutine遵循CSP（Communication &hellip;">
+	<meta name="description" content="最近几天由于市场的疯狂，系统中各种隐藏的问题开始爆发，这些问题或多或少都与同步并发有关。 同步并发系统有两大痼疾
+1. 线程池和连接池是典型同步并发：每收到一个请求，从池中取出一个线程处理业务逻辑，直到业务完成才归还线程。为了提高并发量，线程池中的线程数增加，但是线程数增加，首先占用资源大， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -74,6 +75,55 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/01/17/xiao-xi-qu-dong-cai-shi-zhen-yi-bu/">
+		
+			同步并发与异步并行</a>
+	</h2>
+	<div class="entry-content">
+		<p>最近几天由于市场的疯狂，系统中各种隐藏的问题开始爆发，这些问题或多或少都与同步并发有关。</p>
+
+<p>同步并发系统有两大痼疾
+1. 线程池和连接池是典型同步并发：每收到一个请求，从池中取出一个线程处理业务逻辑，直到业务完成才归还线程。为了提高并发量，线程池中的线程数增加，但是线程数增加，首先占用资源大，其次业务处理过程中需要用同步锁保护数据，同步锁访问导致线程上下文切换，成为并发量的瓶颈。这个瓶颈的存在，由于系统访问量的突发高峰，系统的容量的问题便爆发了。
+1. 更严重的问题是，由于关键数据没有同步引起的并发逻辑问题。当今的系统，几乎都是分布式的，要想在多线程，多进程甚至多服务器并发节点间保证数据同步何其艰难，任何一个数据操作发生竞争，都将导致系统逻辑上出现错误，这种错误如果涉及到交易和账户将导致无法挽回的灾难。</p>
+
+<p>以上两个问题，在市场疯狂的时候同时爆发，这——不仅仅是巧合。解决的方案唯有异步并行。</p>
+
+<p>异步并行的系统，使用自解释的消息承载数据，每一个节点的业务只需要根据消息内容即可处理，无需再访问共享数据。于是多线程，多进程，多服务器节点间无需同步，各自并行处理。</p>
+
+<p>回调不是真正的异步。回调需要在现场保存状态，既然存在状态就可能由于竞争而导致不一致。只有消息驱动的系统才是真正的异步。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-17T13:49:52+08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2015/01/17/xiao-xi-qu-dong-cai-shi-zhen-yi-bu/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -816,61 +866,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/04/05/shuang-xiang-shu-ju-bang-ding-umllei-tu-she-ji/">
-		
-			双向数据绑定UML类图设计</a>
-	</h2>
-	<div class="entry-content">
-		<p>面向对象设计第一步是设计类的继承结构和类的实例依赖组合关系，而最好的表达莫过于UML类图。</p>
-
-<p>考虑一个支持数据双向绑定的GridView的设计，首先设计ViewModel的类继承和对象关系</p>
-
-<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseViewModel%7C+bind(BaseView%20view);],%20[BaseViewModel]%5E-%3E[CellViewModel],%20[BaseViewModel]%5E-%3E[ListViewModel]" alt="ViewModel类体系" /></p>
-
-<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[ListViewModel]++-0..*%3E[BaseViewModel]" alt="ViewModel对象关系" /></p>
-
-<p>以及View的类体系结构</p>
-
-<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseView%7C+bind(BaseViewModel%20vm);],%20[BaseView]%5E-%3E[ListView],%20[BaseView]%5E-%3E[CellView],%20[ListView]%5E-%3E[LineView],%20[ListView]%5E-%3E[GridView]" alt="View继承体系" /></p>
-
-<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/%20[LineView]++-0..*%3E[CellView],%20[GridView]++-0..*%3E[LineView]" alt="View对象结构" /></p>
-
-<p>最后处理双向绑定关系</p>
-
-<p><img src="http://yuml.me/diagram/nofunky;dir:LR;/class/[BaseView]1-1[BaseViewModel],%20[ListView]1-1[ListViewModel],%20[CellView]1-1[CellViewModel]" alt="双向绑定" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-05T17:08:02+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/04/05/shuang-xiang-shu-ju-bang-ding-umllei-tu-she-ji/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
     
@@ -878,7 +873,7 @@
     
     <div class="center"><a href="/blog/archives">Blog Archives</a></div>
 </nav></div>
-	<footer id="footer" class="inner">Copyright &copy; 2014
+	<footer id="footer" class="inner">Copyright &copy; 2015
 
     liebo
 
